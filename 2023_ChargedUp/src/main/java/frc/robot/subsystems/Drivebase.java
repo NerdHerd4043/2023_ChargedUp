@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -33,8 +34,15 @@ public class Drivebase extends SubsystemBase {
     backLeftMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
     frontRightMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
     backRightMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
+
+    frontLeftMotor.setIdleMode(IdleMode.kBrake);
+    backLeftMotor.setIdleMode(IdleMode.kBrake);
+    frontRightMotor.setIdleMode(IdleMode.kBrake);
+    backRightMotor.setIdleMode(IdleMode.kBrake);
     
     frontRightMotor.setInverted(true);
+    backRightMotor.setInverted(true);
+
 
     diffDrive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
   }
