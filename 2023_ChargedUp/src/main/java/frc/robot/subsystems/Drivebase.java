@@ -41,8 +41,9 @@ public class Drivebase extends SubsystemBase {
     backRightMotor.setIdleMode(IdleMode.kBrake);
     
     frontRightMotor.setInverted(true);
-    backRightMotor.setInverted(true);
-
+    backRightMotor.setInverted(false);
+    frontLeftMotor.setInverted(true);
+    backLeftMotor.setInverted(false);
 
     diffDrive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
   }
