@@ -24,5 +24,7 @@ public final class Constants {
     public static final int backRightMotorID = 11;
 
     public static final int currentLimit = 40;
+
+    public static final double turnLimit = 0.7;
   }
 }
