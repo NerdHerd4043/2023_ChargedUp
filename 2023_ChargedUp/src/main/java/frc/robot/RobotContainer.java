@@ -35,7 +35,6 @@ public class RobotContainer {
   private final Drivebase drivebase = new Drivebase();
 
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
-
   private PIDController pidController = new PIDController(PIDConstants.kP, PIDConstants.kI, PIDConstants.kD);
 
   private static XboxController driveStick = new XboxController(0);

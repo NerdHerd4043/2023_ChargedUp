@@ -30,7 +30,6 @@ public final class Constants {
 
   public static final class AutoConstants {
     public static final double chargeStationCenterPose = 4.6; //X position of the center of the charge station
-    public static final double outsideCommunityPose = 3; //X position of being outside the community
 }
 
   public static final class PIDConstants {
