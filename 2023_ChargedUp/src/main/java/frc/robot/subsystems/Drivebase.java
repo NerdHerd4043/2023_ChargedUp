@@ -52,6 +52,10 @@ public class Drivebase extends SubsystemBase {
     diffDrive.arcadeDrive(fwd, -DriveConstants.turnLimit * rot);
   }
 
+  public void stop(){
+    diffDrive.arcadeDrive(0, 0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
