@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  *
  * <p>This class is provided with love by Zynh
  */
-public abstract class DualProfiledPIDSubsystem extends SubsystemBase{
+public abstract class DualProfiledPIDSubsystem extends SubsystemBase {
     /*
      * enum used throughout the DualProfiledPIDSubsystem class to select which controller to use
      */

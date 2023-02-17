@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.Constants.PIDConstants;
+import frc.robot.Constants.DriveConstants.PIDConstants;
 import frc.robot.commands.Drive;
 import frc.robot.commands.auto.BalanceOnPlatform;
 import frc.robot.commands.autoCommands.PidBalance;
@@ -38,7 +38,7 @@ public class RobotContainer {
 
   private PIDController pidController = new PIDController(PIDConstants.kP, PIDConstants.kI, PIDConstants.kD);
 
-  private static XboxController driveStick = new XboxController(0);
+  private static XboxController driveStick = new XboxController(OperatorConstants.kDriverControllerPort);
 
   NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 

@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import cowlib.ArmPosition;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -17,7 +19,7 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
-  public static class DriveConstants {
+  public static final class DriveConstants {
     public static final int frontLeftMotorID = 25;
     public static final int backLeftMotorID = 24;
     public static final int frontRightMotorID = 10;
@@ -26,16 +28,29 @@ public final class Constants {
     public static final int currentLimit = 40;
 
     public static final double turnLimit = 0.7;
+
+    public static final class PIDConstants {
+      public static final double kP = 2;
+      public static final double kI = 0;
+      public static final double kD = 0.01;
+    }
+  }
+
+  public static final class ArmConstants {
+    public static final int upperArmMotorID = 1;
+    public static final int lowerArmMotorID = 2;
+
+    public static final int upperArmEncoderID = 3;
+    public static final int lowerArmEncoderID = 4;
+
+    public static final ArmPosition[] positions = {
+      new ArmPosition(0.0, 0.0),
+      new ArmPosition(1.0, 1.0)
+    };
   }
 
   public static final class AutoConstants {
     public static final double chargeStationCenterPose = 4.6; //X position of the center of the charge station
     public static final double outsideCommunityPose = 3; //X position of being outside the community
-}
-
-  public static final class PIDConstants {
-    public static final double kP = 2;
-    public static final double kI = 0;
-    public static final double kD = 0.01;
   }
 }
