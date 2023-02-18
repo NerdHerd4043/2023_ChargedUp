@@ -2,19 +2,19 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.slideCommands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Slide;
 
-public class CloseSlide extends CommandBase {
+public class OpenSlide extends CommandBase {
 
   private final Slide slide;
   private double startTime;
 
   /** Creates a new OpenSlide. */
-  public CloseSlide(Slide slide) {
+  public OpenSlide(Slide slide) {
     this.slide = slide;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.slide);
@@ -29,7 +29,7 @@ public class CloseSlide extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    slide.close();
+    slide.open();
   }
 
   // Called once the command ends or is interrupted.
@@ -41,6 +41,6 @@ public class CloseSlide extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Timer.getFPGATimestamp() > startTime + .25;
+    return Timer.getFPGATimestamp() > startTime + 0.25;
   }
 }

@@ -6,8 +6,6 @@ package frc.robot;
 
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.CloseSlide;
-import frc.robot.commands.OpenSlide;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Slide;
 import frc.robot.Constants.PIDConstants;
@@ -15,7 +13,7 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.auto.BalanceOnPlatform;
 import frc.robot.commands.autoCommands.PidBalance;
 import frc.robot.commands.autoCommands.TimeDrive;
-import frc.robot.subsystems.Drivebase;
+import frc.robot.commands.slideCommands.*;
 
 import com.kauailabs.navx.frc.AHRS;
 
