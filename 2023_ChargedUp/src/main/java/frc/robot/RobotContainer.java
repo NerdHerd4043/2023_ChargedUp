@@ -4,15 +4,29 @@
 
 package frc.robot;
 
+
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.CloseSlide;
-import frc.robot.commands.Drive;
 import frc.robot.commands.OpenSlide;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Slide;
-//import edu.wpi.first.wpilibj.XboxController;
-// import edu.wpi.first.wpilibj.PS4Controller.Button;
+import frc.robot.Constants.PIDConstants;
+import frc.robot.commands.Drive;
+import frc.robot.commands.auto.BalanceOnPlatform;
+import frc.robot.commands.autoCommands.PidBalance;
+import frc.robot.commands.autoCommands.TimeDrive;
+import frc.robot.subsystems.Drivebase;
+
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -29,16 +43,34 @@ public class RobotContainer {
   private final Drivebase drivebase = new Drivebase();
   private final Slide slide = new Slide();
 
-
   private static CommandXboxController driveStick = new CommandXboxController(0);
   // Replace with CommandPS4Controller or CommandJoystick if needed
   // private final CommandXboxController m_driverController =
   //     new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  public AHRS gyro = new AHRS(SPI.Port.kMXP);
+  private PIDController pidController = new PIDController(PIDConstants.kP, PIDConstants.kI, PIDConstants.kD);
+
+  //private static XboxController driveStick = new XboxController(0);
+
+  NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+
+  private final TimeDrive leaveCommunity = new TimeDrive(drivebase, -0.6, 3.5);
+  private final PidBalance pidBalance = new PidBalance(
+    drivebase, pidController, gyro,
+    () -> Math.abs(limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]));
+
+  private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, pidController, gyro);
+
+  SendableChooser<Command> commandChooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureButtonBindings();
+
+    commandChooser.addOption("Balance with PID", pidBalance);
+    commandChooser.addOption("Leave the Community", leaveCommunity);
+    commandChooser.addOption("Leave Community and Balance", balanceOnPlatform);
 
     drivebase.setDefaultCommand(
         new Drive(
@@ -80,7 +112,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    // return Autos.exampleAuto(m_exampleSubsystem);
-    return null;
+    return commandChooser.getSelected();
   }
 }

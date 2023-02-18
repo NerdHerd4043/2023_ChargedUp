@@ -49,7 +49,11 @@ public class Drivebase extends SubsystemBase {
   }
 
   public void arcadeDrive(double fwd, double rot) {
-    diffDrive.arcadeDrive(fwd, -DriveConstants.turnLimit * rot);
+    diffDrive.arcadeDrive(fwd, DriveConstants.turnLimit * rot);
+  }
+
+  public void stop(){
+    diffDrive.arcadeDrive(0, 0);
   }
 
   @Override
