@@ -14,6 +14,7 @@ import frc.robot.Constants.SlideConstants;
 public class Slide extends SubsystemBase {
   private CANSparkMax slideMotor = new CANSparkMax(SlideConstants.slideMotorID, MotorType.kBrushless);
   private boolean opened = true;
+
   /** Creates a new Slide. */
   public Slide() {
     slideMotor.restoreFactoryDefaults(true);
@@ -21,23 +22,23 @@ public class Slide extends SubsystemBase {
     slideMotor.setIdleMode(IdleMode.kBrake);
   }
 
-  public void open () {
-    if (!opened){
+  public void open() {
+    if(!opened) {
       slideMotor.set(SlideConstants.speed);
       opened = true;
     }
   }
-  public void close () {
-    if (!!opened){
+  public void close() {
+    if(opened) {
       slideMotor.set(-SlideConstants.speed);
       opened = false;
     }
   }
-  public void stop () {
+  public void stop() {
      slideMotor.stopMotor();
   }
   
-  public boolean isOpened () {
+  public boolean isOpened() {
     return opened;
   }
 

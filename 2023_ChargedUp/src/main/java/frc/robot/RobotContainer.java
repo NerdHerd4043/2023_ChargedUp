@@ -6,9 +6,6 @@ package frc.robot;
 
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.CloseSlide;
-import frc.robot.commands.OpenSlide;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Slide;
 import frc.robot.Constants.PIDConstants;
@@ -16,7 +13,7 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.auto.BalanceOnPlatform;
 import frc.robot.commands.autoCommands.PidBalance;
 import frc.robot.commands.autoCommands.TimeDrive;
-import frc.robot.subsystems.Drivebase;
+import frc.robot.commands.slideCommands.*;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -44,13 +41,11 @@ public class RobotContainer {
   private final Slide slide = new Slide();
 
   private static CommandXboxController driveStick = new CommandXboxController(0);
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  // private final CommandXboxController m_driverController =
-  //     new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  //private static XboxController driveStick = new XboxController(0);
+
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
   private PIDController pidController = new PIDController(PIDConstants.kP, PIDConstants.kI, PIDConstants.kD);
 
-  //private static XboxController driveStick = new XboxController(0);
 
   NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
