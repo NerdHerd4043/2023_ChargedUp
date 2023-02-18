@@ -18,11 +18,23 @@ public final class Constants {
   }
 
   public static class DriveConstants {
-    public static final int frontLeftMotorID = 9;
-    public static final int frontRightMotorID = 3;
-    public static final int backLeftMotorID = 15;
-    public static final int backRightMotorID = 14;
+    public static final int frontLeftMotorID = 25;
+    public static final int backLeftMotorID = 24;
+    public static final int frontRightMotorID = 10;
+    public static final int backRightMotorID = 11;
 
     public static final int currentLimit = 40;
+
+    public static final double turnLimit = 0.7;
+  }
+
+  public static final class AutoConstants {
+    public static final double chargeStationCenterPose = 4.6; //X position of the center of the charge station
+}
+
+  public static final class PIDConstants {
+    public static final double kP = 2;
+    public static final double kI = 0;
+    public static final double kD = 0.01;
   }
 }
