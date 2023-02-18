@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.PIDConstants;
 import frc.robot.commands.Drive;
 import frc.robot.commands.auto.BalanceOnPlatform;
