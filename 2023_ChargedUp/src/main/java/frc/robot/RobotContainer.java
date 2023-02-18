@@ -4,6 +4,12 @@
 
 package frc.robot;
 
+
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.CloseSlide;
+import frc.robot.commands.OpenSlide;
+import frc.robot.subsystems.Drivebase;
+import frc.robot.subsystems.Slide;
 import frc.robot.Constants.PIDConstants;
 import frc.robot.commands.Drive;
 import frc.robot.commands.auto.BalanceOnPlatform;
@@ -19,8 +25,10 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+// import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -32,11 +40,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivebase drivebase = new Drivebase();
+  private final Slide slide = new Slide();
+
+  private static CommandXboxController driveStick = new CommandXboxController(0);
+  //private static XboxController driveStick = new XboxController(0);
 
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
   private PIDController pidController = new PIDController(PIDConstants.kP, PIDConstants.kI, PIDConstants.kD);
 
-  private static XboxController driveStick = new XboxController(0);
 
   NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
@@ -52,7 +63,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    configureBindings();
+    configureButtonBindings();
 
     commandChooser.addOption("Balance with PID", pidBalance);
     commandChooser.addOption("Leave the Community", leaveCommunity);
@@ -74,7 +85,14 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {
+  private void configureButtonBindings() {
+    // new JoystickButton(driveStick, Button.kY.value).toggleOnTrue(new OpenSlide(Slide));
+    driveStick.y().onTrue(new OpenSlide(slide));
+    driveStick.a().onTrue(new CloseSlide(slide));
+
+
+  }
+  
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     // new Trigger(m_exampleSubsystem::exampleCondition)
     //     .onTrue(new ExampleCommand(m_exampleSubsystem));
@@ -82,7 +100,7 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-  }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

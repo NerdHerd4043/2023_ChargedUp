@@ -16,6 +16,14 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  
+  public static class SlideConstants {
+    public static final int slideMotorID = 0;
+
+    public static final int currentLimit = 40; 
+
+    public static final double speed = .25;
+  }
 
   public static class DriveConstants {
     public static final int frontLeftMotorID = 25;
