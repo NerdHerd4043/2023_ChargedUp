@@ -17,9 +17,11 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
-  public static class ArmComstants {
+  public static class ArmConstants {
+    public static final int shoulderMotorID = 100;
+    public static final int elbowMotorID = 50;
 
-    
+    public static final int currentLimit = 40;
   }
   
   public static class DriveConstants {
