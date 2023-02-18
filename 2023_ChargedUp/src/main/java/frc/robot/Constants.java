@@ -35,4 +35,14 @@ public final class Constants {
 
     public static final double turnLimit = 0.7;
   }
+
+  public static final class AutoConstants {
+    public static final double chargeStationCenterPose = 4.6; //X position of the center of the charge station
+}
+
+  public static final class PIDConstants {
+    public static final double kP = 2;
+    public static final double kI = 0;
+    public static final double kD = 0.01;
+  }
 }
