@@ -16,7 +16,13 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  
+  public static class ArmComstants {
+
+    
+  }
+
+
+
   public static class SlideConstants {
     public static final int slideMotorID = 0;
 
