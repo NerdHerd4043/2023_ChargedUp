@@ -10,6 +10,7 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.auto.BalanceOnPlatform;
 import frc.robot.commands.autoCommands.PidBalance;
 import frc.robot.commands.autoCommands.TimeDrive;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivebase;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -18,9 +19,9 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -33,12 +34,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivebase drivebase = new Drivebase();
+  private final Arm arm = new Arm();
 
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
-
+  
   private PIDController pidController = new PIDController(PIDConstants.kP, PIDConstants.kI, PIDConstants.kD);
 
-  private static XboxController driveStick = new XboxController(OperatorConstants.kDriverControllerPort);
+  private static CommandXboxController driveStick = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
@@ -84,6 +86,8 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    driveStick.rightBumper().onTrue(new InstantCommand(arm::incrementPosition));
   }
 
   /**

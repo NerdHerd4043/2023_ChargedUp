@@ -56,29 +56,40 @@ public class Arm extends DualProfiledPIDSubsystem {
             0,
             // The motion profile constraints
             new TrapezoidProfile.Constraints(0, 0)));
+
+    lowerArmMotor.restoreFactoryDefaults(true);
+    upperArmMotor.restoreFactoryDefaults(true);    
   }
 
   @Override
   public void useOutput(double outputA, double outputB, TrapezoidProfile.State setpointA, TrapezoidProfile.State setpointB) {
     // Use the output (and optionally the setpoint) here
-    lowerArmMotor.setVoltage(outputA);
-    upperArmMotor.setVoltage(outputB); // need to add two arm feed forwards? spooky prospect
+    // lowerArmMotor.setVoltage(outputA);
+    // upperArmMotor.setVoltage(outputB); // need to add two arm feed forwards? spooky prospect
   }
 
   public void incrementPosition() {
+    changePosition(1);
+  }
+
+  public void decrementPosition() {
+    changePosition(-1);
+  }
+
+  public void changePosition(int amount) {
     currentPosition = clamp(
-      Math.floor(currentPosition + 1),
+      Math.floor(currentPosition + amount),
       0,
       positions.length - 1
     );
-    updateGoals();
+    updateGoals(); 
   }
 
   public void positionAdjust(double amount) {
     currentPosition = clamp(
       currentPosition + amount,
       0,
-      positions.length - 0.75
+      positions.length - .75
     );
     updateGoals();
   }
@@ -87,13 +98,13 @@ public class Arm extends DualProfiledPIDSubsystem {
   private void updateGoals() {
     setGoals(
       lerp(
-        positions[(int) Math.floor(currentPosition)].upper(),
-        positions[(int) Math.ceil(currentPosition)].upper(), 
+        positions[Math.min((int) Math.floor(currentPosition), positions.length - 2)].upper(),
+        positions[Math.min((int) Math.ceil(currentPosition), positions.length - 1)].upper(), 
         currentPosition % Math.floor(currentPosition)
       ),
       lerp(
-        positions[(int) Math.floor(currentPosition)].lower(),
-        positions[(int) Math.ceil(currentPosition)].lower(),
+        positions[Math.min((int) Math.floor(currentPosition), positions.length - 2)].lower(),
+        positions[Math.min((int) Math.ceil(currentPosition), positions.length - 1)].lower(),
         currentPosition % Math.floor(currentPosition)
       ) 
     );
