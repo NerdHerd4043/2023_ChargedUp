@@ -100,15 +100,20 @@ public class Arm extends DualProfiledPIDSubsystem {
 
   // do the lerp
   private void updateGoals() {
+    int lowerBound = Math.min((int) Math.floor(currentPosition), positions.length - 2);
+    int upperBound = Math.min((int) Math.ceil(currentPosition), positions.length - 1);
+
+    double fraction = currentPosition % Math.floor(currentPosition);
+
     setGoals(
       lerp(
-        positions[Math.min((int) Math.floor(currentPosition), positions.length - 2)].upper(),
-        positions[Math.min((int) Math.ceil(currentPosition), positions.length - 1)].upper(), 
-        currentPosition % Math.floor(currentPosition)),
+        positions[lowerBound].upper(),
+        positions[upperBound].upper(), 
+        fraction),
       lerp(
-        positions[Math.min((int) Math.floor(currentPosition), positions.length - 2)].lower(),
-        positions[Math.min((int) Math.ceil(currentPosition), positions.length - 1)].lower(),
-        currentPosition % Math.floor(currentPosition)) 
+        positions[lowerBound].lower(),
+        positions[upperBound].lower(),
+        fraction) 
     );
   }
 
