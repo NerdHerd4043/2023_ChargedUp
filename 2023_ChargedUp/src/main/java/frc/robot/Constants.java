@@ -35,9 +35,9 @@ public final class Constants {
   public static class SlideConstants {
     public static final int slideMotorID = 21;
 
-    public static final int currentLimit = 40; 
+    public static final int currentLimit = 5; 
 
-    public static final double speed = 0.25;
+    public static final double speed = 0.4;
   }
 
   public static final class AutoConstants {
