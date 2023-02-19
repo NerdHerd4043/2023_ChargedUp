@@ -7,8 +7,12 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 // import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+
 // import edu.wpi.first.wpilibj.Timer;
 import static frc.robot.Constants.ArmConstants.*;
+
+import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
@@ -85,7 +89,7 @@ public class Arm extends DualProfiledPIDSubsystem {
     updateGoals(); 
   }
 
-  public void positionAdjust(double amount) {
+  public void adjustPosition(double amount) {
     currentPosition = clamp(
       currentPosition + amount,
       0,
@@ -116,6 +120,10 @@ public class Arm extends DualProfiledPIDSubsystem {
 
   private double lerp(double a, double b, double f) {
       return (a * (1.0 - f)) + (b * f);
+  }
+
+  public CommandBase adjustCommand(DoubleSupplier amount) {
+    return this.run(() -> this.adjustPosition(amount.getAsDouble()));
   }
 
   @Override
