@@ -39,8 +39,8 @@ public class Drivebase extends SubsystemBase {
     
     frontRightMotor.setInverted(true);
     backRightMotor.setInverted(true);
-    frontLeftMotor.setInverted(false);
-    backLeftMotor.setInverted(false);
+    frontLeftMotor.setInverted(false); // These arent needed I think
+    backLeftMotor.setInverted(false); // These arent needed I think
     
     backLeftMotor.follow(frontLeftMotor);
     backRightMotor.follow(frontRightMotor);
