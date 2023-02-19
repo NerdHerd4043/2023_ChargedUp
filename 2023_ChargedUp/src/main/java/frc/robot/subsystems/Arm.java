@@ -8,7 +8,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 // import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 // import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Constants.ArmConstants;
+import static frc.robot.Constants.ArmConstants.*;
 
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
@@ -17,11 +17,13 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import cowlib.DualProfiledPIDSubsystem;
 
 public class Arm extends DualProfiledPIDSubsystem {
-  private CANSparkMax lowerArmMotor = new CANSparkMax(ArmConstants.lowerArmMotorID, MotorType.kBrushed);
-  private CANSparkMax upperArmMotor = new CANSparkMax(ArmConstants.upperArmMotorID, MotorType.kBrushed);
+  private CANSparkMax lowerArmMotor = new CANSparkMax(lowerArmMotorID, MotorType.kBrushed);
+  private CANSparkMax upperArmMotor = new CANSparkMax(upperArmMotorID, MotorType.kBrushed);
 
-  private CANCoder lowerArmEncoder = new CANCoder(ArmConstants.lowerArmMotorID);
-  private CANCoder upperArmEncoder = new CANCoder(ArmConstants.upperArmMotorID);
+  private CANCoder lowerArmEncoder = new CANCoder(lowerArmMotorID);
+  private CANCoder upperArmEncoder = new CANCoder(upperArmMotorID);
+
+  private double currentPosition = 0;
 
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/feedforward.html
   // https://docs.wpilib.org/en/stable/docs/software/pathplanning/system-identification/introduction.html
@@ -61,6 +63,48 @@ public class Arm extends DualProfiledPIDSubsystem {
     // Use the output (and optionally the setpoint) here
     lowerArmMotor.setVoltage(outputA);
     upperArmMotor.setVoltage(outputB); // need to add two arm feed forwards? spooky prospect
+  }
+
+  public void incrementPosition() {
+    currentPosition = clamp(
+      Math.floor(currentPosition + 1),
+      0,
+      positions.length - 1
+    );
+    updateGoals();
+  }
+
+  public void positionAdjust(double amount) {
+    currentPosition = clamp(
+      currentPosition + amount,
+      0,
+      positions.length - 0.75
+    );
+    updateGoals();
+  }
+
+  // do the lerp
+  private void updateGoals() {
+    setGoals(
+      lerp(
+        positions[(int) Math.floor(currentPosition)].upper(),
+        positions[(int) Math.ceil(currentPosition)].upper(), 
+        currentPosition % Math.floor(currentPosition)
+      ),
+      lerp(
+        positions[(int) Math.floor(currentPosition)].lower(),
+        positions[(int) Math.ceil(currentPosition)].lower(),
+        currentPosition % Math.floor(currentPosition)
+      ) 
+    );
+  }
+
+  private double clamp(double val, double min, double max) {
+    return Math.max(min, Math.min(max, val));
+  }
+
+  private double lerp(double a, double b, double f) {
+      return (a * (1.0 - f)) + (b * f);
   }
 
   @Override
