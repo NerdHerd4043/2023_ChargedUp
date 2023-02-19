@@ -104,13 +104,11 @@ public class Arm extends DualProfiledPIDSubsystem {
       lerp(
         positions[Math.min((int) Math.floor(currentPosition), positions.length - 2)].upper(),
         positions[Math.min((int) Math.ceil(currentPosition), positions.length - 1)].upper(), 
-        currentPosition % Math.floor(currentPosition)
-      ),
+        currentPosition % Math.floor(currentPosition)),
       lerp(
         positions[Math.min((int) Math.floor(currentPosition), positions.length - 2)].lower(),
         positions[Math.min((int) Math.ceil(currentPosition), positions.length - 1)].lower(),
-        currentPosition % Math.floor(currentPosition)
-      ) 
+        currentPosition % Math.floor(currentPosition)) 
     );
   }
 
