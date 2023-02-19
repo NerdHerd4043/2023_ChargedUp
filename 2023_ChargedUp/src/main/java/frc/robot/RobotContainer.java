@@ -23,7 +23,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -67,6 +67,8 @@ public class RobotContainer {
     commandChooser.addOption("Leave the Community", leaveCommunity);
     commandChooser.addOption("Leave Community and Balance", balanceOnPlatform);
 
+    SmartDashboard.putData(commandChooser);
+
     drivebase.setDefaultCommand(
         new Drive(
             drivebase,
@@ -85,10 +87,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // new JoystickButton(driveStick, Button.kY.value).toggleOnTrue(new OpenSlide(Slide));
-    driveStick.y().onTrue(new OpenSlide(slide));
-    driveStick.a().onTrue(new CloseSlide(slide));
-
-
+    driveStick.a().onTrue(new OpenSlide(slide));
+    driveStick.y().onTrue(new CloseSlide(slide));
   }
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`

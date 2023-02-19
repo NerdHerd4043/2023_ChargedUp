@@ -22,7 +22,7 @@ public class BalanceOnPlatform extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       //Drop piece
-      new TimeDrive(drivebase, -0.6, 3.5),
+      new TimeDrive(drivebase, -0.6, 3),
       new PidBalance(
         drivebase, pidController, gyro,
         () -> Math.abs(NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose").getDoubleArray(new Double[0])[0]))
