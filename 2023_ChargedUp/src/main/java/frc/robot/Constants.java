@@ -17,11 +17,6 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
-  public static class ArmComstants {
-
-    
-  }
-  
   public static class DriveConstants {
     public static final int frontLeftMotorID = 25;
     public static final int backLeftMotorID = 24;
@@ -32,9 +27,13 @@ public final class Constants {
     
     public static final double turnLimit = 0.7;
   }
+
+  public static class ArmConstants {
+
+  }
   
   public static class SlideConstants {
-    public static final int slideMotorID = 0;
+    public static final int slideMotorID = 21;
 
     public static final int currentLimit = 40; 
 
