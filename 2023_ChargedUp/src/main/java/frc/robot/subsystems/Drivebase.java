@@ -32,10 +32,10 @@ public class Drivebase extends SubsystemBase {
     frontRightMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
     backRightMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
 
-    frontLeftMotor.setIdleMode(IdleMode.kBrake);
-    backLeftMotor.setIdleMode(IdleMode.kBrake);
-    frontRightMotor.setIdleMode(IdleMode.kBrake);
-    backRightMotor.setIdleMode(IdleMode.kBrake);
+    frontLeftMotor.setIdleMode(IdleMode.kCoast);
+    backLeftMotor.setIdleMode(IdleMode.kCoast);
+    frontRightMotor.setIdleMode(IdleMode.kCoast);
+    backRightMotor.setIdleMode(IdleMode.kCoast);
     
     frontRightMotor.setInverted(true);
     backRightMotor.setInverted(true);

@@ -54,7 +54,7 @@ public class RobotContainer {
     drivebase, pidController, gyro,
     () -> Math.abs(limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]));
 
-  private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, pidController, gyro);
+  private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, slide, pidController, gyro);
 
   SendableChooser<Command> commandChooser = new SendableChooser<>();
 

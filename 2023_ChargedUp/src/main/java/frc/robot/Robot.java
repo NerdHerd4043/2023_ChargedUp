@@ -49,10 +49,16 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    
+    try{
+      SmartDashboard.putNumber("X Position", limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]);
+    }
+    catch(Exception e){
+      // System.out.println("Limelight not found");
+    }
 
-    SmartDashboard.putNumber("X Position", limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]);
     SmartDashboard.putNumber("Roll", m_robotContainer.gyro.getRoll());
-  }
+}
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
