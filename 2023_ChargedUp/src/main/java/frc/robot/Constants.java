@@ -44,11 +44,11 @@ public final class Constants {
     public static final int lowerArmEncoderID = 4;
 
     public static final ArmPosition[] positions = {
-      new ArmPosition(0.0, 0.0),
-      new ArmPosition(1.0, 0.5),
-      new ArmPosition(2.0, 1.0),
-      new ArmPosition(3.5, 2.0),
-      new ArmPosition(5, 3.0)
+      new ArmPosition(0, 0),
+      new ArmPosition(10, 5),
+      new ArmPosition(15, 10),
+      new ArmPosition(25, 20),
+      new ArmPosition(30, 25)
     };
   }
 
