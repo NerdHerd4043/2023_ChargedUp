@@ -20,7 +20,7 @@ import frc.robot.subsystems.Drivebase;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PidBalance extends PIDCommand {
-  
+
   private final Drivebase drivebase;
   private final AHRS gyro;
   private double timerStart = 0;
@@ -39,25 +39,23 @@ public class PidBalance extends PIDCommand {
         // This uses the output
         output -> {
           // Use the output here
-          if(NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1){
-            if(gyro.getRoll() <= -6.5 && output > 0){ //this keeps the robot driving backwards when the aprltag comes into veiw
-              drivebase.arcadeDrive(0.3, 0);       //When the apriltag comes into view, the output defaults to a high positive number
-            }
-            else if(output >= 0.5){ //speed limit of 0.5
-              drivebase.arcadeDrive(-0.5, 0);
-            }
-            else{ //else -> drive like normal
+          if (NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1) {
+            if (gyro.getRoll() >= 6.5 && output > 0) { // this keeps the robot driving backwards when the aprltag comes
+                                                       // into veiw
+              drivebase.arcadeDrive(0.3, 0); // When the apriltag comes into view, the output defaults to a high
+                                             // positive number
+            } else if (output >= 0.65) { // speed limit of 0.5
+              drivebase.arcadeDrive(-0.65, 0);
+            } else { // else -> drive like normal
               drivebase.arcadeDrive(-output, 0);
             }
-          }
-          else if(gyro.getRoll() <= -6.5) //if the tag isn't seen and the charge station is tilted towards it, drive backwards 
-          {
+          } else if (gyro.getRoll() >= 6.5) { // if the tag isn't seen and the charge station is tilted towards it, drive
+                                              // backwards
             drivebase.arcadeDrive(0.4, 0);
+          } else { // tag isn't visible on other occasions -> stop robot
+            drivebase.arcadeDrive(0, 0);
           }
-          else { //tag isn't visible on other occasions -> stop robot
-          drivebase.arcadeDrive(0, 0);
-          }
-          
+
           SmartDashboard.putNumber("PID Output", output);
         },
         drivebase);
@@ -73,16 +71,15 @@ public class PidBalance extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(gyro.getRoll() >= 0.5 && gyro.getRoll() <= 2.2 &&
-    Math.abs(NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose").getDoubleArray(new Double[0])[0]) >= 4)
-    {
-      if(firstCheck){
+    if (gyro.getRoll() >= -1 && gyro.getRoll() <= 1.8 &&
+        Math.abs(NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose")
+            .getDoubleArray(new Double[0])[0]) >= 4) {
+      if (firstCheck) {
         timerStart = Timer.getFPGATimestamp();
         firstCheck = false;
       }
       return (Timer.getFPGATimestamp() - timerStart) > timerEnd;
-    }
-    else{
+    } else {
       firstCheck = true;
       return false;
     }

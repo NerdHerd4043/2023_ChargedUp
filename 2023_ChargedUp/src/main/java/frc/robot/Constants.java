@@ -16,7 +16,7 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  
+
   public static class DriveConstants {
     public static final int frontLeftMotorID = 25;
     public static final int backLeftMotorID = 24;
@@ -27,17 +27,21 @@ public final class Constants {
     
     public static final double turnLimit = 0.7;
   }
+
+  public static class ArmConstants {
+
+  }
   
   public static class SlideConstants {
-    public static final int slideMotorID = 0;
+    public static final int slideMotorID = 21;
 
-    public static final int currentLimit = 40; 
+    public static final int currentLimit = 3; 
 
-    public static final double speed = 0.25;
+    public static final double speed = 0.4;
   }
 
   public static final class AutoConstants {
-    public static final double chargeStationCenterPose = 4.6; //X position of the center of the charge station
+    public static final double chargeStationCenterPose = 4.4; //X position of the center of the charge station
 }
 
   public static final class PIDConstants {

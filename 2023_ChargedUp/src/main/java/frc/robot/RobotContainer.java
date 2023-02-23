@@ -23,7 +23,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -54,7 +54,7 @@ public class RobotContainer {
     drivebase, pidController, gyro,
     () -> Math.abs(limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]));
 
-  private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, pidController, gyro);
+  private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, slide, pidController, gyro);
 
   SendableChooser<Command> commandChooser = new SendableChooser<>();
 
@@ -66,6 +66,8 @@ public class RobotContainer {
     commandChooser.addOption("Balance with PID", pidBalance);
     commandChooser.addOption("Leave the Community", leaveCommunity);
     commandChooser.addOption("Leave Community and Balance", balanceOnPlatform);
+
+    SmartDashboard.putData(commandChooser);
 
     drivebase.setDefaultCommand(
         new Drive(
@@ -85,10 +87,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // new JoystickButton(driveStick, Button.kY.value).toggleOnTrue(new OpenSlide(Slide));
-    driveStick.y().onTrue(new OpenSlide(slide));
-    driveStick.a().onTrue(new CloseSlide(slide));
-
-
+    driveStick.a().onTrue(new OpenSlide(slide));
+    driveStick.y().onTrue(new CloseSlide(slide));
   }
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
