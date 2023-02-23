@@ -32,24 +32,30 @@ public final class Constants {
     public static final int lowerArmMotorID = 0;
     public static final int upperArmMotorID = 1;
 
-    public static class ArmPIDConstants {
-      public static final double kP1 = 0;
-      public static final double kI1 = 0;
-      public static final double kD1 = 0;
-
-      public static final double kP2 = 0;
-      public static final double kI2 = 0;
-      public static final double kD2 = 0;
+    public static class PID {
+      public static class Upper{
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+      }
+      public static class Lower{
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+      }
     }
 
-    public static class FeedForwardConstants {
-      public static final double ks1 = 0;
-      public static final double kv1 = 0;
-      public static final double ka1 = 0;
-
-      public static final double ks2 = 0;
-      public static final double kv2 = 0;
-      public static final double ka2 = 0;
+    public static class FeedForward {
+      public static class Upper{
+        public static final double ks = 0;
+        public static final double kv = 0;
+        public static final double ka = 0;
+      }
+      public static class Lower{
+        public static final double ks = 0;
+        public static final double kv = 0;
+        public static final double ka = 0;
+      }
     }
   }
   
@@ -63,11 +69,12 @@ public final class Constants {
 
   public static final class AutoConstants {
     public static final double chargeStationCenterPose = 4.4; //X position of the center of the charge station
+    
+    public static final class PID {
+      public static final double kP = 2;
+      public static final double kI = 0;
+      public static final double kD = 0.01;
+    }
 }
 
-  public static final class AutoPIDConstants {
-    public static final double kP = 2;
-    public static final double kI = 0;
-    public static final double kD = 0.01;
-  }
 }
