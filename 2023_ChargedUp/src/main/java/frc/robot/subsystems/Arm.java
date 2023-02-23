@@ -7,7 +7,8 @@ package frc.robot.subsystems;
 import cowlib.DualProfiledPIDSubsystem;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.State;;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
+import frc.robot.Constants.ArmConstants;;
 
 public class Arm extends DualProfiledPIDSubsystem {
   /** Creates a new Arm. */
@@ -15,17 +16,17 @@ public class Arm extends DualProfiledPIDSubsystem {
     super(
         //PID Controller A for lower arm
         new ProfiledPIDController(
-            0,
-            0,
-            0,
-            // The motion profile constraints
-            new TrapezoidProfile.Constraints(0, 0)),
+          ArmConstants.ArmPIDConstants.kP1,
+          ArmConstants.ArmPIDConstants.kI1,
+          ArmConstants.ArmPIDConstants.kD1,
+          // The motion profile constraints
+          new TrapezoidProfile.Constraints(0, 0)),
         
         //PID Controller B for upper arm
         new ProfiledPIDController(
-          0,
-          0,
-          0,
+          ArmConstants.ArmPIDConstants.kP2,
+          ArmConstants.ArmPIDConstants.kI2,
+          ArmConstants.ArmPIDConstants.kD2,
           // The motion profile constraints
           new TrapezoidProfile.Constraints(0, 0)));
   }
