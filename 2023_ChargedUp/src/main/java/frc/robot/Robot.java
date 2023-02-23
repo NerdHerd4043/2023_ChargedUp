@@ -52,9 +52,10 @@ public class Robot extends TimedRobot {
     
     try{
       SmartDashboard.putNumber("X Position", limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]);
+      SmartDashboard.putBoolean("Limelight Connected", true);
     }
     catch(Exception e){
-      // System.out.println("Limelight not found");
+      SmartDashboard.putBoolean("Limelight Connected", false);
     }
 
     SmartDashboard.putNumber("Roll", m_robotContainer.gyro.getRoll());
