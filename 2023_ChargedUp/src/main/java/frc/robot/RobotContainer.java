@@ -6,6 +6,7 @@ package frc.robot;
 
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Slide;
 import frc.robot.Constants.AutoConstants;
@@ -25,6 +26,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -39,6 +41,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivebase drivebase = new Drivebase();
   private final Slide slide = new Slide();
+  private final Arm arm = new Arm();
 
   private static CommandXboxController driveStick = new CommandXboxController(0);
   //private static XboxController driveStick = new XboxController(0);
@@ -89,6 +92,8 @@ public class RobotContainer {
     // new JoystickButton(driveStick, Button.kY.value).toggleOnTrue(new OpenSlide(Slide));
     driveStick.a().onTrue(new OpenSlide(slide));
     driveStick.y().onTrue(new CloseSlide(slide));
+    driveStick.rightBumper().onTrue(new InstantCommand(arm::nextPose, arm));
+    driveStick.leftBumper().onTrue(new InstantCommand(arm::previousPose, arm));
   }
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`

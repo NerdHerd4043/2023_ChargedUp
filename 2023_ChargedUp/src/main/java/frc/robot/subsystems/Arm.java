@@ -24,6 +24,8 @@ public class Arm extends DualProfiledPIDSubsystem {
   private CANCoder lowerArmEncoder = new CANCoder(ArmConstants.lowerArmEncoderID);
   private CANCoder upperArmEncoder = new CANCoder(ArmConstants.upperArmEncoderID);
 
+  private int pose;
+
   /** Creates a new Arm. */
   public Arm() {
     super(
@@ -41,23 +43,43 @@ public class Arm extends DualProfiledPIDSubsystem {
           PID.Lower.kI,
           PID.Lower.kD,
           // The motion profile constraints
-          new TrapezoidProfile.Constraints(0, 0)));
+          new TrapezoidProfile.Constraints(0, 0))); 
 
     lowerArmMotor.restoreFactoryDefaults();
     upperArmMotor.restoreFactoryDefaults();
 
     lowerArmMotor.setIdleMode(IdleMode.kBrake);
     upperArmMotor.setIdleMode(IdleMode.kBrake);
+
+    pose = 0;
+  }
+
+  public void nextPose(){
+    if(pose < 3){
+      pose++;
+    }
+  }
+
+  public void previousPose(){
+    if(pose > 0){
+      pose--;
+    }
   }
 
   @Override
-  public void useOutput(double outputA, double outputB, State setpointA, State setpointB) {
-    // Use the output (and optionally the setpoint) here
+  public void useOutput(double outputLower, double outputUpper, State setpointLower, State setpointUpper) {
+    // lowerArmMotor.setVoltage(outputLower);
+    // upperArmMotor.setVoltage(outputUpper);
   }
 
   @Override
   public double getMeasurement(Controller controller) {
     // Return the process variable measurement here
-    return 0;
+    switch(controller){
+      case A: return lowerArmEncoder.getAbsolutePosition();
+      case B: return upperArmEncoder.getAbsolutePosition();
+
+      default: return 0;
+    }
   }
 }
