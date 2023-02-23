@@ -32,6 +32,9 @@ public final class Constants {
     public static final int lowerArmMotorID = 0;
     public static final int upperArmMotorID = 1;
 
+    public static final int lowerArmEncoderID = 0;
+    public static final int upperArmEncoderID = 1;
+
     public static class PID {
       public static class Upper{
         public static final double kP = 0;
