@@ -15,6 +15,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ArmConstants.PID;
+import static frc.robot.Constants.ArmConstants.*;
 
 public class Arm extends DualProfiledPIDSubsystem {
 
@@ -24,7 +25,7 @@ public class Arm extends DualProfiledPIDSubsystem {
   private CANCoder lowerArmEncoder = new CANCoder(ArmConstants.lowerArmEncoderID);
   private CANCoder upperArmEncoder = new CANCoder(ArmConstants.upperArmEncoderID);
 
-  private int pose;
+  private int pose = 0;
 
   /** Creates a new Arm. */
   public Arm() {
@@ -50,20 +51,24 @@ public class Arm extends DualProfiledPIDSubsystem {
 
     lowerArmMotor.setIdleMode(IdleMode.kBrake);
     upperArmMotor.setIdleMode(IdleMode.kBrake);
-
-    pose = 0;
   }
 
   public void nextPose(){
-    if(pose < 3){
+    if(pose < poses.length){
       pose++;
     }
+    updateGoals();
   }
 
   public void previousPose(){
     if(pose > 0){
       pose--;
     }
+    updateGoals();
+  }
+
+  public void updateGoals(){
+    setGoals(poses[pose].lower(), poses[pose].upper());
   }
 
   @Override
