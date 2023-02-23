@@ -4,29 +4,40 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import cowlib.DualProfiledPIDSubsystem;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;;
 
-public class Arm extends CommandBase {
+public class Arm extends DualProfiledPIDSubsystem {
   /** Creates a new Arm. */
   public Arm() {
-    // Use addRequirements() here to declare subsystem dependencies.
+    super(
+        //PID Controller A for lower arm
+        new ProfiledPIDController(
+            0,
+            0,
+            0,
+            // The motion profile constraints
+            new TrapezoidProfile.Constraints(0, 0)),
+        
+        //PID Controller B for upper arm
+        new ProfiledPIDController(
+          0,
+          0,
+          0,
+          // The motion profile constraints
+          new TrapezoidProfile.Constraints(0, 0)));
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void useOutput(double outputA, double outputB, State setpointA, State setpointB) {
+    // Use the output (and optionally the setpoint) here
+  }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+  public double getMeasurement(Controller controller) {
+    // Return the process variable measurement here
+    return 0;
   }
 }
