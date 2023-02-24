@@ -6,9 +6,10 @@ package frc.robot;
 
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Slide;
-import frc.robot.Constants.PIDConstants;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.Drive;
 import frc.robot.commands.auto.BalanceOnPlatform;
 import frc.robot.commands.autoCommands.PidBalance;
@@ -40,12 +41,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivebase drivebase = new Drivebase();
   private final Slide slide = new Slide();
+  private final Arm arm = new Arm();
 
   private static CommandXboxController driveStick = new CommandXboxController(0);
   //private static XboxController driveStick = new XboxController(0);
 
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
-  private PIDController pidController = new PIDController(PIDConstants.kP, PIDConstants.kI, PIDConstants.kD);
+  private PIDController pidController = new PIDController(AutoConstants.PID.kP, AutoConstants.PID.kI, AutoConstants.PID.kD);
 
 
   NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
@@ -93,6 +95,8 @@ public class RobotContainer {
     driveStick.b().onTrue(new InstantCommand(drivebase::flipFront, drivebase));
     driveStick.start().onTrue(new InstantCommand(drivebase::setCoastMode, drivebase));
     driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
+    driveStick.rightBumper().onTrue(new InstantCommand(arm::nextPose, arm));
+    driveStick.leftBumper().onTrue(new InstantCommand(arm::previousPose, arm));
   }
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`

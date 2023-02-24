@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import cowlib.arm.ArmPosition;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -29,7 +31,42 @@ public final class Constants {
   }
 
   public static class ArmConstants {
+    public static final int lowerArmMotorID = 0;
+    public static final int upperArmMotorID = 1;
 
+    public static final int lowerArmEncoderID = 0;
+    public static final int upperArmEncoderID = 1;
+
+    public static final ArmPosition[] poses = new ArmPosition[] {
+      new ArmPosition(0, 0),
+      new ArmPosition(5, 5)
+    };
+
+    public static class PID {
+      public static class Upper{
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+      }
+      public static class Lower{
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+      }
+    }
+
+    public static class FeedForward {
+      public static class Upper{
+        public static final double ks = 0;
+        public static final double kv = 0;
+        public static final double ka = 0;
+      }
+      public static class Lower{
+        public static final double ks = 0;
+        public static final double kv = 0;
+        public static final double ka = 0;
+      }
+    }
   }
   
   public static class SlideConstants {
@@ -42,11 +79,12 @@ public final class Constants {
 
   public static final class AutoConstants {
     public static final double chargeStationCenterPose = 4.4; //X position of the center of the charge station
+    
+    public static final class PID {
+      public static final double kP = 2;
+      public static final double kI = 0;
+      public static final double kD = 0.01;
+    }
 }
 
-  public static final class PIDConstants {
-    public static final double kP = 2;
-    public static final double kI = 0;
-    public static final double kD = 0.01;
-  }
 }
