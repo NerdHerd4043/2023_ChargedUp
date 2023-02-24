@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -19,6 +20,8 @@ public class Drivebase extends SubsystemBase {
   private CANSparkMax frontRightMotor = new CANSparkMax(DriveConstants.frontRightMotorID, MotorType.kBrushless);
   private CANSparkMax backLeftMotor = new CANSparkMax(DriveConstants.backLeftMotorID, MotorType.kBrushless);
   private CANSparkMax backRightMotor = new CANSparkMax(DriveConstants.backRightMotorID, MotorType.kBrushless);
+
+  private boolean rslIsFront = true;
 
   /** Creates a new Drivebase. */
   public Drivebase() {
@@ -46,14 +49,48 @@ public class Drivebase extends SubsystemBase {
     backRightMotor.follow(frontRightMotor);
     
     diffDrive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
+
+    SmartDashboard.putBoolean("RSL Is Front", rslIsFront);
+    SmartDashboard.putString("Motor Mode", "Coast");
   }
 
   public void arcadeDrive(double fwd, double rot) {
-    diffDrive.arcadeDrive(fwd, DriveConstants.turnLimit * rot);
+    if(rslIsFront){
+      diffDrive.arcadeDrive(fwd, DriveConstants.turnLimit * rot);
+    }
+    else{
+      diffDrive.arcadeDrive(-fwd, DriveConstants.turnLimit * rot);
+    }
   }
 
   public void stop(){
     diffDrive.arcadeDrive(0, 0);
+  }
+
+  public void flipFront(){
+    if(rslIsFront){
+      rslIsFront = false;
+    }
+    else{
+      rslIsFront = true;
+    }
+    SmartDashboard.putBoolean("RSL Is Front", rslIsFront);
+  }
+
+  public void setCoastMode(){
+    frontLeftMotor.setIdleMode(IdleMode.kCoast);
+    backLeftMotor.setIdleMode(IdleMode.kCoast);
+    frontRightMotor.setIdleMode(IdleMode.kCoast);
+    backRightMotor.setIdleMode(IdleMode.kCoast);
+    SmartDashboard.putString("Motor Mode", "Coast");
+  }
+
+  public void setBreakMode(){
+    frontLeftMotor.setIdleMode(IdleMode.kBrake);
+    backLeftMotor.setIdleMode(IdleMode.kBrake);
+    frontRightMotor.setIdleMode(IdleMode.kBrake);
+    backRightMotor.setIdleMode(IdleMode.kBrake);
+    SmartDashboard.putString("Motor Mode", "Break");
   }
 
   @Override
