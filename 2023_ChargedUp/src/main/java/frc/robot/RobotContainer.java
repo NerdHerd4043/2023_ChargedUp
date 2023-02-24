@@ -92,6 +92,9 @@ public class RobotContainer {
     // new JoystickButton(driveStick, Button.kY.value).toggleOnTrue(new OpenSlide(Slide));
     driveStick.a().onTrue(new OpenSlide(slide));
     driveStick.y().onTrue(new CloseSlide(slide));
+    driveStick.b().onTrue(new InstantCommand(drivebase::flipFront, drivebase));
+    driveStick.start().onTrue(new InstantCommand(drivebase::setCoastMode, drivebase));
+    driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
     driveStick.rightBumper().onTrue(new InstantCommand(arm::nextPose, arm));
     driveStick.leftBumper().onTrue(new InstantCommand(arm::previousPose, arm));
   }
@@ -113,5 +116,13 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return commandChooser.getSelected();
+  }
+
+  public Command getCoastCommand(){
+    return new InstantCommand(drivebase::setCoastMode);
+  }
+
+  public Command getBreakCommand(){
+    return new InstantCommand(drivebase::setBreakMode);
   }
 }
