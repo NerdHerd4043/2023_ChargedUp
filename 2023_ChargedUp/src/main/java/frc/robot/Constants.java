@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+// import com.ctre.phoenix.led.CANdleConfiguration;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -35,6 +37,8 @@ public final class Constants {
     public static final double turnLimit = 0.7;
   }
   
+  
+
   public static class SlideConstants {
     public static final int slideMotorID = 0;
 
@@ -52,4 +56,9 @@ public final class Constants {
     public static final double kI = 0;
     public static final double kD = 0.01;
   }
+  public static final class CANdleConstants {
+    public static final int CANdleID = 1;
+
+  }
+
 }

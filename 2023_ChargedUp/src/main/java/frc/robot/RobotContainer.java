@@ -5,7 +5,7 @@
 package frc.robot;
 
 
-import frc.robot.Constants.OperatorConstants;
+// import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Slide;
 import frc.robot.Constants.PIDConstants;
@@ -13,6 +13,8 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.auto.BalanceOnPlatform;
 import frc.robot.commands.autoCommands.PidBalance;
 import frc.robot.commands.autoCommands.TimeDrive;
+import frc.robot.commands.lightControl.PurpleLights;
+import frc.robot.commands.lightControl.YellowLights;
 import frc.robot.commands.slideCommands.*;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -21,7 +23,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.XboxController;
+// import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -87,7 +89,8 @@ public class RobotContainer {
     // new JoystickButton(driveStick, Button.kY.value).toggleOnTrue(new OpenSlide(Slide));
     driveStick.y().onTrue(new OpenSlide(slide));
     driveStick.a().onTrue(new CloseSlide(slide));
-
+    driveStick.povLeft().onTrue(new PurpleLights());
+    driveStick.povRight().onTrue(new YellowLights());
 
   }
   
