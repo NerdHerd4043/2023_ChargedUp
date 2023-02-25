@@ -77,6 +77,10 @@ public class RobotContainer {
             drivebase,
             () -> driveStick.getLeftY(),
             () -> driveStick.getRightX()));
+
+    arm.setDefaultCommand(
+      arm.adjustCommand(
+        () -> driveStick.getRightTriggerAxis() - driveStick.getLeftTriggerAxis()));
   }
 
   /**
@@ -89,7 +93,6 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureButtonBindings() {
-    // new JoystickButton(driveStick, Button.kY.value).toggleOnTrue(new OpenSlide(Slide));
     driveStick.a().onTrue(new OpenSlide(slide));
     driveStick.y().onTrue(new CloseSlide(slide));
     driveStick.b().onTrue(new InstantCommand(drivebase::flipFront, drivebase));

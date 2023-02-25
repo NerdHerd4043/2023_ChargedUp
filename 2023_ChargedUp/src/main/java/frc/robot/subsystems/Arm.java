@@ -13,9 +13,12 @@ import cowlib.DualProfiledPIDSubsystem;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ArmConstants.PID;
 import static frc.robot.Constants.ArmConstants.*;
+
+import java.util.function.DoubleSupplier;
 
 public class Arm extends DualProfiledPIDSubsystem {
 
@@ -25,7 +28,7 @@ public class Arm extends DualProfiledPIDSubsystem {
   private CANCoder lowerArmEncoder = new CANCoder(ArmConstants.lowerArmEncoderID);
   private CANCoder upperArmEncoder = new CANCoder(ArmConstants.upperArmEncoderID);
 
-  private int pose = 0;
+  private double pose = 0;
 
   /** Creates a new Arm. */
   public Arm() {
@@ -53,22 +56,38 @@ public class Arm extends DualProfiledPIDSubsystem {
     upperArmMotor.setIdleMode(IdleMode.kBrake);
   }
 
-  public void nextPose(){
-    if(pose < poses.length){
-      pose++;
-    }
+  public double clamp(double value, double min, double max){
+    return Math.max(min, Math.min(max, value));
+  }
+
+  public void nextPose() {
+    changePose(1);
+  }
+
+  public void previousPose() {
+    changePose(-1);
+  }
+
+  public void changePose(int nextPose) {
+    pose = clamp(pose + nextPose, 0, poses.length - 1);
     updateGoals();
   }
 
-  public void previousPose(){
-    if(pose > 0){
-      pose--;
-    }
+  public void adjustPosition(double input) {
+    pose = clamp(pose + input, 0, poses.length - 1);
     updateGoals();
   }
 
-  public void updateGoals(){
-    setGoals(poses[pose].lower(), poses[pose].upper());
+  public CommandBase adjustCommand(DoubleSupplier input) {
+    return this.run(() -> this.adjustPosition(input.getAsDouble() / 100));
+  }
+
+  public void setGoals() {
+    
+  }
+
+  public void updateGoals() {
+    setGoals(poses[(int)pose].lower(), poses[(int)pose].upper());
   }
 
   @Override

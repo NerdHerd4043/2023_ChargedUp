@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import cowlib.arm.ArmPosition;
+import cowlib.arm.ArmPose;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -37,9 +37,10 @@ public final class Constants {
     public static final int lowerArmEncoderID = 0;
     public static final int upperArmEncoderID = 1;
 
-    public static final ArmPosition[] poses = new ArmPosition[] {
-      new ArmPosition(0, 0),
-      new ArmPosition(5, 5)
+    public static final ArmPose[] poses = new ArmPose[] {
+      new ArmPose(0, 0),
+      new ArmPose(5, 5),
+      new ArmPose(10, 10)
     };
 
     public static class PID {

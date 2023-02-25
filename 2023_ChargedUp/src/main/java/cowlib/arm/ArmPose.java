@@ -5,11 +5,11 @@
 package cowlib.arm;
 
 /** Add your docs here. */
-public class ArmPosition {
+public class ArmPose {
     private double lower;
     private double upper;
 
-    public ArmPosition(double lower, double upper) {
+    public ArmPose(double lower, double upper) {
       this.lower = lower;
       this.upper = upper;
     }

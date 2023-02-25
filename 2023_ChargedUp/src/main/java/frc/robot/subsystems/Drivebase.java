@@ -68,12 +68,7 @@ public class Drivebase extends SubsystemBase {
   }
 
   public void flipFront(){
-    if(rslIsFront){
-      rslIsFront = false;
-    }
-    else{
-      rslIsFront = true;
-    }
+    rslIsFront = !rslIsFront;
     SmartDashboard.putBoolean("RSL Is Front", rslIsFront);
   }
 
