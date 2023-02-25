@@ -27,7 +27,7 @@ public final class Constants {
     
     public static final int currentLimit = 40;
     
-    public static final double turnLimit = 0.7;
+    public static final double turnLimit = 0.6;
   }
 
   public static class ArmConstants {

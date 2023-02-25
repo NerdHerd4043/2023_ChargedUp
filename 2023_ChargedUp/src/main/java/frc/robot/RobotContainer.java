@@ -41,7 +41,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivebase drivebase = new Drivebase();
   private final Slide slide = new Slide();
-  private final Arm arm = new Arm();
+  // private final Arm arm = new Arm();
 
   private static CommandXboxController driveStick = new CommandXboxController(0);
   //private static XboxController driveStick = new XboxController(0);
@@ -95,8 +95,8 @@ public class RobotContainer {
     driveStick.b().onTrue(new InstantCommand(drivebase::flipFront, drivebase));
     driveStick.start().onTrue(new InstantCommand(drivebase::setCoastMode, drivebase));
     driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
-    driveStick.rightBumper().onTrue(new InstantCommand(arm::nextPose, arm));
-    driveStick.leftBumper().onTrue(new InstantCommand(arm::previousPose, arm));
+    // driveStick.rightBumper().onTrue(new InstantCommand(arm::nextPose, arm));
+    // driveStick.leftBumper().onTrue(new InstantCommand(arm::previousPose, arm));
   }
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`

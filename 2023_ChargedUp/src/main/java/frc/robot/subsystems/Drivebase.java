@@ -25,10 +25,10 @@ public class Drivebase extends SubsystemBase {
 
   /** Creates a new Drivebase. */
   public Drivebase() {
-    backLeftMotor.restoreFactoryDefaults(true);
-    frontRightMotor.restoreFactoryDefaults(true);
-    frontLeftMotor.restoreFactoryDefaults(true);
-    backRightMotor.restoreFactoryDefaults(true);
+    backLeftMotor.restoreFactoryDefaults();
+    frontRightMotor.restoreFactoryDefaults();
+    frontLeftMotor.restoreFactoryDefaults();
+    backRightMotor.restoreFactoryDefaults();
     
     frontLeftMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
     backLeftMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
@@ -56,10 +56,10 @@ public class Drivebase extends SubsystemBase {
 
   public void arcadeDrive(double fwd, double rot) {
     if(rslIsFront){
-      diffDrive.arcadeDrive(fwd, DriveConstants.turnLimit * rot);
+      diffDrive.arcadeDrive(fwd, DriveConstants.turnLimit * rot, true);
     }
     else{
-      diffDrive.arcadeDrive(-fwd, DriveConstants.turnLimit * rot);
+      diffDrive.arcadeDrive(-fwd, DriveConstants.turnLimit * rot, true);
     }
   }
 
