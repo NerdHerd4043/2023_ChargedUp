@@ -13,6 +13,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
+interface applyConfig {
+  public void apply(CANSparkMax motorController);
+}
+
 public class Drivebase extends SubsystemBase {
   private DifferentialDrive diffDrive;
 
@@ -25,13 +29,8 @@ public class Drivebase extends SubsystemBase {
 
   /** Creates a new Drivebase. */
   public Drivebase() {
-    backLeftMotor.restoreFactoryDefaults();
-    frontRightMotor.restoreFactoryDefaults();
-    frontLeftMotor.restoreFactoryDefaults();
-    backRightMotor.restoreFactoryDefaults();
-    
+    restoreFactoryDefaults();
     setCurrentLimit(DriveConstants.currentLimit);
-
     setCoastMode();
     
     frontRightMotor.setInverted(true);
@@ -67,10 +66,7 @@ public class Drivebase extends SubsystemBase {
   }
 
   public void setIdleMode(IdleMode mode) {
-    frontLeftMotor.setIdleMode(mode);
-    backLeftMotor.setIdleMode(mode);
-    frontRightMotor.setIdleMode(mode);
-    backRightMotor.setIdleMode(mode);
+    applyMotorConfigs((mc) -> mc.setIdleMode(mode));
     SmartDashboard.putString("Motor Mode", mode.toString());
   }
   
@@ -82,11 +78,19 @@ public class Drivebase extends SubsystemBase {
     setIdleMode(IdleMode.kBrake);
   }
 
-  public void setCurrentLimit(int limit) {
-    frontLeftMotor.setSmartCurrentLimit(limit);
-    backLeftMotor.setSmartCurrentLimit(limit);
-    frontRightMotor.setSmartCurrentLimit(limit);
-    backRightMotor.setSmartCurrentLimit(limit);
+  private void setCurrentLimit(int limit) {
+    applyMotorConfigs((mc) -> mc.setSmartCurrentLimit(limit));
+  }
+
+  private void restoreFactoryDefaults() {
+    applyMotorConfigs((mc) -> mc.restoreFactoryDefaults());
+  }
+
+  private void applyMotorConfigs(applyConfig config) {
+    config.apply(backLeftMotor);
+    config.apply(backRightMotor);
+    config.apply(frontLeftMotor);
+    config.apply(frontRightMotor);
   }
 
   @Override
