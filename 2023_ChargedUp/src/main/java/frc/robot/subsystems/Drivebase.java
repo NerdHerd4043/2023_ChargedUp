@@ -54,13 +54,17 @@ public class Drivebase extends SubsystemBase {
     SmartDashboard.putString("Motor Mode", "Coast");
   }
 
-  public void arcadeDrive(double fwd, double rot) {
+  public void arcadeDrive(double fwd, double rot, boolean sqrd) {
     if(rslIsFront){
-      diffDrive.arcadeDrive(fwd, DriveConstants.turnLimit * rot, true);
+      diffDrive.arcadeDrive(fwd, DriveConstants.turnLimit * rot, sqrd);
     }
     else{
-      diffDrive.arcadeDrive(-fwd, DriveConstants.turnLimit * rot, true);
+      diffDrive.arcadeDrive(-fwd, DriveConstants.turnLimit * rot, sqrd);
     }
+  }
+
+  public void arcadeDrive(double fwd, double rot) {
+    arcadeDrive(fwd, rot, false);
   }
 
   public void stop(){

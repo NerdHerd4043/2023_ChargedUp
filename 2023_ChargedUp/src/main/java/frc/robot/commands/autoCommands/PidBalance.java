@@ -49,13 +49,19 @@ public class PidBalance extends PIDCommand {
             } else { // else -> drive like normal
               drivebase.arcadeDrive(-output, 0);
             }
-          } else if (gyro.getRoll() >= 6.5) { // if the tag isn't seen and the charge station is tilted towards it, drive
-                                              // backwards
-            drivebase.arcadeDrive(0.4, 0);
-          } else { // tag isn't visible on other occasions -> stop robot
-            drivebase.arcadeDrive(0, 0);
+          } 
+          else { // tag isn't visible on other occasions -> stop robot
+            if (gyro.getRoll() >= 6.5) { // if the tag isn't seen and the charge station is tilted towards it, drive backwards                                  
+              drivebase.arcadeDrive(0.4, 0);
+            }
+            else if (gyro.getRoll() <= -6.5)
+            {
+              drivebase.arcadeDrive(-0.4, 0);
+            }
+            else{
+              drivebase.arcadeDrive(0, 0);
+            }
           }
-
           SmartDashboard.putNumber("PID Output", output);
         },
         drivebase);
