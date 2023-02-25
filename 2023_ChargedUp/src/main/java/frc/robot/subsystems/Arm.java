@@ -82,10 +82,6 @@ public class Arm extends DualProfiledPIDSubsystem {
     return this.run(() -> this.adjustPosition(input.getAsDouble() / 100));
   }
 
-  public void setGoals() {
-    
-  }
-
   public void updateGoals() {
     setGoals(poses[(int)pose].lower(), poses[(int)pose].upper());
   }

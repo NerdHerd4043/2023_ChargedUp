@@ -40,7 +40,7 @@ public final class Constants {
     public static final ArmPose[] poses = new ArmPose[] {
       new ArmPose(0, 0),
       new ArmPose(5, 5),
-      new ArmPose(10, 10)
+      new ArmPose(15, 20)
     };
 
     public static class PID {
