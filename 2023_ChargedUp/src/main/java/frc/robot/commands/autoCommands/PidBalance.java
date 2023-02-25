@@ -39,32 +39,26 @@ public class PidBalance extends PIDCommand {
         // This uses the output
         output -> {
           // Use the output here
-          if (NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1) {
-            if (gyro.getRoll() >= 6.5 && output > 0) { // this keeps the robot driving backwards when the aprltag comes
-                                                       // into veiw
-              drivebase.arcadeDrive(0.3, 0); // When the apriltag comes into view, the output defaults to a high
-                                             // positive number
-            } else if (output >= 0.5) { // speed limit of 0.5
-              drivebase.arcadeDrive(-0.5, 0);
+          double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+
+          if (tv == 1) {
+            if (gyro.getRoll() >= 6.5 && output > 0) { // this keeps the robot driving backwards when the aprltag comes into veiw
+              drivebase.arcadeDrive(0.3, 0); // When the apriltag comes into view, the output defaults to a high positive number
             } else { // else -> drive like normal
-              drivebase.arcadeDrive(-output, 0);
+              drivebase.arcadeDrive(-Math.min(output, 0.5), 0);
             }
-          } 
-          else { // tag isn't visible on other occasions -> stop robot
-            if (gyro.getRoll() >= 6.5) { // if the tag isn't seen and the charge station is tilted towards it, drive backwards                                  
-              drivebase.arcadeDrive(0.4, 0);
-            }
-            else if (gyro.getRoll() <= -6.5)
-            {
-              drivebase.arcadeDrive(-0.4, 0);
-            }
-            else{
-              drivebase.arcadeDrive(0, 0);
-            }
+          } else if (Math.abs(gyro.getRoll()) >= 6.5) { // if the tag isn't seen and the charge station is tilted towards it, drive backwards   
+            drivebase.arcadeDrive(0.4 * Math.signum(gyro.getRoll()), 0);
+          } else {
+            drivebase.stop();
           }
           SmartDashboard.putNumber("PID Output", output);
         },
         drivebase);
+
+    // Math.abs gets the absolute value of a number https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html#abs-double-
+    // Math.signum gets the sign of a number https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html#signum-double-
+    // Math.min returns the smaller of two numbers https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html#min-double-double-
 
     this.drivebase = drivebase;
     this.gyro = gyro;

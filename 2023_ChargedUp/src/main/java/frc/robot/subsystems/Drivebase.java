@@ -30,15 +30,9 @@ public class Drivebase extends SubsystemBase {
     frontLeftMotor.restoreFactoryDefaults();
     backRightMotor.restoreFactoryDefaults();
     
-    frontLeftMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
-    backLeftMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
-    frontRightMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
-    backRightMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
+    setCurrentLimit(DriveConstants.currentLimit);
 
-    frontLeftMotor.setIdleMode(IdleMode.kCoast);
-    backLeftMotor.setIdleMode(IdleMode.kCoast);
-    frontRightMotor.setIdleMode(IdleMode.kCoast);
-    backRightMotor.setIdleMode(IdleMode.kCoast);
+    setCoastMode();
     
     frontRightMotor.setInverted(true);
     backRightMotor.setInverted(true);
@@ -55,46 +49,45 @@ public class Drivebase extends SubsystemBase {
   }
 
   public void arcadeDrive(double fwd, double rot, boolean sqrd) {
-    if(rslIsFront){
-      diffDrive.arcadeDrive(fwd, DriveConstants.turnLimit * rot, sqrd);
-    }
-    else{
-      diffDrive.arcadeDrive(-fwd, DriveConstants.turnLimit * rot, sqrd);
-    }
+    double direction = (rslIsFront) ? 1 : -1;
+
+    diffDrive.arcadeDrive(fwd * direction, DriveConstants.turnLimit * rot, sqrd);
   }
 
   public void arcadeDrive(double fwd, double rot) {
     arcadeDrive(fwd, rot, false);
   }
 
-  public void stop(){
+  public void stop() {
     diffDrive.arcadeDrive(0, 0);
   }
 
-  public void flipFront(){
-    if(rslIsFront){
-      rslIsFront = false;
-    }
-    else{
-      rslIsFront = true;
-    }
+  public void flipFront() {
+    rslIsFront = !rslIsFront;
     SmartDashboard.putBoolean("RSL Is Front", rslIsFront);
   }
 
-  public void setCoastMode(){
-    frontLeftMotor.setIdleMode(IdleMode.kCoast);
-    backLeftMotor.setIdleMode(IdleMode.kCoast);
-    frontRightMotor.setIdleMode(IdleMode.kCoast);
-    backRightMotor.setIdleMode(IdleMode.kCoast);
-    SmartDashboard.putString("Motor Mode", "Coast");
+  public void setIdleMode(IdleMode mode) {
+    frontLeftMotor.setIdleMode(mode);
+    backLeftMotor.setIdleMode(mode);
+    frontRightMotor.setIdleMode(mode);
+    backRightMotor.setIdleMode(mode);
+    SmartDashboard.putString("Motor Mode", mode.toString());
+  }
+  
+  public void setCoastMode() {
+    setIdleMode(IdleMode.kCoast);
   }
 
-  public void setBreakMode(){
-    frontLeftMotor.setIdleMode(IdleMode.kBrake);
-    backLeftMotor.setIdleMode(IdleMode.kBrake);
-    frontRightMotor.setIdleMode(IdleMode.kBrake);
-    backRightMotor.setIdleMode(IdleMode.kBrake);
-    SmartDashboard.putString("Motor Mode", "Break");
+  public void setBreakMode() {
+    setIdleMode(IdleMode.kBrake);
+  }
+
+  public void setCurrentLimit(int limit) {
+    frontLeftMotor.setSmartCurrentLimit(limit);
+    backLeftMotor.setSmartCurrentLimit(limit);
+    frontRightMotor.setSmartCurrentLimit(limit);
+    backRightMotor.setSmartCurrentLimit(limit);
   }
 
   @Override
