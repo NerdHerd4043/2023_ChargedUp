@@ -45,7 +45,6 @@ public class Drivebase extends SubsystemBase {
     diffDrive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
 
     SmartDashboard.putBoolean("RSL Is Front", rslIsFront);
-    SmartDashboard.putString("Motor Mode", "Coast");
   }
 
   public void arcadeDrive(double fwd, double rot, boolean sqrd) {
