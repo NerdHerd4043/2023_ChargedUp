@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+// import com.ctre.phoenix.led.CANdleConfiguration;
 import cowlib.arm.ArmPosition;
+
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -69,6 +71,8 @@ public final class Constants {
     }
   }
   
+  
+
   public static class SlideConstants {
     public static final int slideMotorID = 21;
 
@@ -86,6 +90,10 @@ public final class Constants {
       public static final double kI = 0;
       public static final double kD = 0.01;
     }
-}
+  }
+  
+    public static final class CANdleConstants {
+    public static final int CANdleID = 1;
 
+  }
 }

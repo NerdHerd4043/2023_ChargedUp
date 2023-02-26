@@ -5,6 +5,8 @@
 package frc.robot;
 
 
+
+import frc.robot.subsystems.CANdleSystem;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivebase;
@@ -14,6 +16,8 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.auto.BalanceOnPlatform;
 import frc.robot.commands.autoCommands.PidBalance;
 import frc.robot.commands.autoCommands.TimeDrive;
+import frc.robot.commands.lightControl.PurpleLights;
+import frc.robot.commands.lightControl.YellowLights;
 import frc.robot.commands.slideCommands.*;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -22,7 +26,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.XboxController;
+// import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -41,6 +45,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivebase drivebase = new Drivebase();
   private final Slide slide = new Slide();
+  private final CANdleSystem candle = new CANdleSystem();
   // private final Arm arm = new Arm();
 
   private static CommandXboxController driveStick = new CommandXboxController(0);
@@ -97,6 +102,8 @@ public class RobotContainer {
     driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
     // driveStick.rightBumper().onTrue(new InstantCommand(arm::nextPose, arm));
     // driveStick.leftBumper().onTrue(new InstantCommand(arm::previousPose, arm));
+    driveStick.povLeft().onTrue(new InstantCommand(candle::Purple, candle));
+    driveStick.povRight().onTrue(new InstantCommand(candle::Yellow, candle));
   }
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
@@ -116,6 +123,10 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return commandChooser.getSelected();
+  }
+
+  public Command getCandleOffCommand() {
+    return new InstantCommand(candle::TurnOff);
   }
 
   public Command getCoastCommand(){

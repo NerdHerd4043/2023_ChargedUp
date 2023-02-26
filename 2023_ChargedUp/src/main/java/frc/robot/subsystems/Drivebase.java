@@ -15,7 +15,6 @@ import frc.robot.Constants.DriveConstants;
 
 public class Drivebase extends SubsystemBase {
   private DifferentialDrive diffDrive;
-
   private CANSparkMax frontLeftMotor = new CANSparkMax(DriveConstants.frontLeftMotorID, MotorType.kBrushless);
   private CANSparkMax frontRightMotor = new CANSparkMax(DriveConstants.frontRightMotorID, MotorType.kBrushless);
   private CANSparkMax backLeftMotor = new CANSparkMax(DriveConstants.backLeftMotorID, MotorType.kBrushless);
