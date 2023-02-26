@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-
+    
     try{
       SmartDashboard.putNumber("X Position", limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]);
       SmartDashboard.putBoolean("Limelight Connected", true);
@@ -57,14 +57,14 @@ public class Robot extends TimedRobot {
     catch(Exception e){
       SmartDashboard.putBoolean("Limelight Connected", false);
     }
-    
     SmartDashboard.putNumber("Roll", m_robotContainer.gyro.getRoll());
-  }
+}
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
     m_robotContainer.getCandleOffCommand().schedule();
+    m_robotContainer.getBreakCommand().schedule();
   }
 
   @Override
@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+      m_robotContainer.getBreakCommand().andThen(m_autonomousCommand).schedule();
     }
   }
 
@@ -94,6 +94,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    m_robotContainer.getCoastCommand().schedule();
   }
 
   /** This function is called periodically during operator control. */

@@ -5,6 +5,8 @@
 package frc.robot;
 
 // import com.ctre.phoenix.led.CANdleConfiguration;
+import cowlib.arm.ArmPosition;
+
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -19,13 +21,6 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
-  public static class ArmConstants {
-    public static final int shoulderMotorID = 100;
-    public static final int elbowMotorID = 50;
-
-    public static final int currentLimit = 40;
-  }
-  
   public static class DriveConstants {
     public static final int frontLeftMotorID = 25;
     public static final int backLeftMotorID = 24;
@@ -34,7 +29,46 @@ public final class Constants {
     
     public static final int currentLimit = 40;
     
-    public static final double turnLimit = 0.7;
+    public static final double turnLimit = 0.6;
+  }
+
+  public static class ArmConstants {
+    public static final int lowerArmMotorID = 0;
+    public static final int upperArmMotorID = 1;
+
+    public static final int lowerArmEncoderID = 0;
+    public static final int upperArmEncoderID = 1;
+
+    public static final ArmPosition[] poses = new ArmPosition[] {
+      new ArmPosition(0, 0),
+      new ArmPosition(5, 5)
+    };
+
+    public static class PID {
+      public static class Upper{
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+      }
+      public static class Lower{
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+      }
+    }
+
+    public static class FeedForward {
+      public static class Upper{
+        public static final double ks = 0;
+        public static final double kv = 0;
+        public static final double ka = 0;
+      }
+      public static class Lower{
+        public static final double ks = 0;
+        public static final double kv = 0;
+        public static final double ka = 0;
+      }
+    }
   }
   
   
@@ -42,23 +76,24 @@ public final class Constants {
   public static class SlideConstants {
     public static final int slideMotorID = 21;
 
-    public static final int currentLimit = 40; 
+    public static final int currentLimit = 3; 
 
-    public static final double speed = 0.25;
+    public static final double speed = 0.4;
   }
 
   public static final class AutoConstants {
-    public static final double chargeStationCenterPose = 4.6; //X position of the center of the charge station
-}
-
-  public static final class PIDConstants {
-    public static final double kP = 2;
-    public static final double kI = 0;
-    public static final double kD = 0.01;
+    public static final double chargeStationCenterPose = 4.7; //X position of the center of the charge station
+    //At comp: 4.4, at shop: 4.7
+    
+    public static final class PID {
+      public static final double kP = 2;
+      public static final double kI = 0;
+      public static final double kD = 0.01;
+    }
   }
-  public static final class CANdleConstants {
+  
+    public static final class CANdleConstants {
     public static final int CANdleID = 1;
 
   }
-
 }

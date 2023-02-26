@@ -5,11 +5,13 @@
 package frc.robot;
 
 
+
 import frc.robot.subsystems.CANdleSystem;
-// import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Slide;
-import frc.robot.Constants.PIDConstants;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.Drive;
 import frc.robot.commands.auto.BalanceOnPlatform;
 import frc.robot.commands.autoCommands.PidBalance;
@@ -26,7 +28,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.SPI;
 // import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -44,12 +46,13 @@ public class RobotContainer {
   private final Drivebase drivebase = new Drivebase();
   private final Slide slide = new Slide();
   private final CANdleSystem candle = new CANdleSystem();
+  // private final Arm arm = new Arm();
 
   private static CommandXboxController driveStick = new CommandXboxController(0);
   //private static XboxController driveStick = new XboxController(0);
 
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
-  private PIDController pidController = new PIDController(PIDConstants.kP, PIDConstants.kI, PIDConstants.kD);
+  private PIDController pidController = new PIDController(AutoConstants.PID.kP, AutoConstants.PID.kI, AutoConstants.PID.kD);
 
 
   NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
@@ -59,7 +62,7 @@ public class RobotContainer {
     drivebase, pidController, gyro,
     () -> Math.abs(limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]));
 
-  private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, pidController, gyro);
+  private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, slide, pidController, gyro);
 
   SendableChooser<Command> commandChooser = new SendableChooser<>();
 
@@ -71,6 +74,8 @@ public class RobotContainer {
     commandChooser.addOption("Balance with PID", pidBalance);
     commandChooser.addOption("Leave the Community", leaveCommunity);
     commandChooser.addOption("Leave Community and Balance", balanceOnPlatform);
+
+    SmartDashboard.putData(commandChooser);
 
     drivebase.setDefaultCommand(
         new Drive(
@@ -90,11 +95,15 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // new JoystickButton(driveStick, Button.kY.value).toggleOnTrue(new OpenSlide(Slide));
-    driveStick.y().onTrue(new OpenSlide(slide));
-    driveStick.a().onTrue(new CloseSlide(slide));
+    driveStick.a().onTrue(new OpenSlide(slide));
+    driveStick.y().onTrue(new CloseSlide(slide));
+    driveStick.b().onTrue(new InstantCommand(drivebase::flipFront, drivebase));
+    driveStick.start().onTrue(new InstantCommand(drivebase::setCoastMode, drivebase));
+    driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
+    // driveStick.rightBumper().onTrue(new InstantCommand(arm::nextPose, arm));
+    // driveStick.leftBumper().onTrue(new InstantCommand(arm::previousPose, arm));
     driveStick.povLeft().onTrue(new InstantCommand(candle::Purple, candle));
     driveStick.povRight().onTrue(new InstantCommand(candle::Yellow, candle));
-
   }
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
@@ -118,5 +127,13 @@ public class RobotContainer {
 
   public Command getCandleOffCommand() {
     return new InstantCommand(candle::TurnOff);
+  }
+
+  public Command getCoastCommand(){
+    return new InstantCommand(drivebase::setCoastMode);
+  }
+
+  public Command getBreakCommand(){
+    return new InstantCommand(drivebase::setBreakMode);
   }
 }
