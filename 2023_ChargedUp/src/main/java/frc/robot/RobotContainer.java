@@ -116,7 +116,7 @@ public class RobotContainer {
     return commandChooser.getSelected();
   }
 
-  // public Command getCandleOffCommand() {
-  //   return new candle.TurnOff();
-  // }
+  public Command getCandleOffCommand() {
+    return new InstantCommand(candle::TurnOff);
+  }
 }

@@ -10,6 +10,7 @@ import frc.robot.Constants.CANdleConstants;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
+
 public class CANdleSystem extends SubsystemBase {
   CANdle candle = new CANdle(CANdleConstants.CANdleID);
 
@@ -23,6 +24,7 @@ public class CANdleSystem extends SubsystemBase {
     candle.setLEDs(255, 0, 255);
 
   }
+
   public void Yellow () {
     candle.setLEDs(255, 255, 0);
 
@@ -31,6 +33,7 @@ public class CANdleSystem extends SubsystemBase {
   public void TurnOff() {
     candle.setLEDs(0,0,0);
   }
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
