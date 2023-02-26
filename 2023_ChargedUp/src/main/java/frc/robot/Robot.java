@@ -50,13 +50,22 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    SmartDashboard.putNumber("X Position", limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]);
+    try{
+      SmartDashboard.putNumber("X Position", limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]);
+      SmartDashboard.putBoolean("Limelight Connected", true);
+    }
+    catch(Exception e){
+      SmartDashboard.putBoolean("Limelight Connected", false);
+    }
+    
     SmartDashboard.putNumber("Roll", m_robotContainer.gyro.getRoll());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    
+  }
 
   @Override
   public void disabledPeriodic() {}

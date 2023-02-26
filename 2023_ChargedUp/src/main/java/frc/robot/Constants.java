@@ -40,7 +40,7 @@ public final class Constants {
   
 
   public static class SlideConstants {
-    public static final int slideMotorID = 0;
+    public static final int slideMotorID = 21;
 
     public static final int currentLimit = 40; 
 

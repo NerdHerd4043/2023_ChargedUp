@@ -27,6 +27,10 @@ public class CANdleSystem extends SubsystemBase {
     candle.setLEDs(255, 255, 0);
 
   }
+
+  public void TurnOff() {
+    candle.setLEDs(0,0,0);
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

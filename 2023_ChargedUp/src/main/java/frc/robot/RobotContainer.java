@@ -5,6 +5,7 @@
 package frc.robot;
 
 
+import frc.robot.subsystems.CANdleSystem;
 // import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Slide;
@@ -27,6 +28,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -41,6 +43,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivebase drivebase = new Drivebase();
   private final Slide slide = new Slide();
+  private final CANdleSystem candle = new CANdleSystem();
 
   private static CommandXboxController driveStick = new CommandXboxController(0);
   //private static XboxController driveStick = new XboxController(0);
@@ -89,8 +92,8 @@ public class RobotContainer {
     // new JoystickButton(driveStick, Button.kY.value).toggleOnTrue(new OpenSlide(Slide));
     driveStick.y().onTrue(new OpenSlide(slide));
     driveStick.a().onTrue(new CloseSlide(slide));
-    driveStick.povLeft().onTrue(new PurpleLights());
-    driveStick.povRight().onTrue(new YellowLights());
+    driveStick.povLeft().onTrue(new InstantCommand(candle::Purple, candle));
+    driveStick.povRight().onTrue(new InstantCommand(candle::Yellow, candle));
 
   }
   
@@ -112,4 +115,8 @@ public class RobotContainer {
     // An example command will be run in autonomous
     return commandChooser.getSelected();
   }
+
+  // public Command getCandleOffCommand() {
+  //   return new candle.TurnOff();
+  // }
 }
