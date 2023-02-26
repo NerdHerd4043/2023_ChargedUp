@@ -7,8 +7,6 @@ package frc.robot;
 
 
 import frc.robot.subsystems.CANdleSystem;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Slide;
 import frc.robot.Constants.AutoConstants;
@@ -16,8 +14,6 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.auto.BalanceOnPlatform;
 import frc.robot.commands.autoCommands.PidBalance;
 import frc.robot.commands.autoCommands.TimeDrive;
-import frc.robot.commands.lightControl.PurpleLights;
-import frc.robot.commands.lightControl.YellowLights;
 import frc.robot.commands.slideCommands.*;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -49,11 +45,10 @@ public class RobotContainer {
   // private final Arm arm = new Arm();
 
   private static CommandXboxController driveStick = new CommandXboxController(0);
-  //private static XboxController driveStick = new XboxController(0);
+  // private static CommandXboxController driveStick2 = new CommandXboxController(1);
 
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
   private PIDController pidController = new PIDController(AutoConstants.PID.kP, AutoConstants.PID.kI, AutoConstants.PID.kD);
-
 
   NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
@@ -94,26 +89,19 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureButtonBindings() {
-    // new JoystickButton(driveStick, Button.kY.value).toggleOnTrue(new OpenSlide(Slide));
-    driveStick.a().onTrue(new OpenSlide(slide));
-    driveStick.y().onTrue(new CloseSlide(slide));
+    driveStick.rightBumper().onTrue(new OpenSlide(slide));
+    driveStick.leftBumper().onTrue(new CloseSlide(slide));
     driveStick.b().onTrue(new InstantCommand(drivebase::flipFront, drivebase));
     driveStick.start().onTrue(new InstantCommand(drivebase::setCoastMode, drivebase));
     driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
-    // driveStick.rightBumper().onTrue(new InstantCommand(arm::nextPose, arm));
-    // driveStick.leftBumper().onTrue(new InstantCommand(arm::previousPose, arm));
     driveStick.povLeft().onTrue(new InstantCommand(candle::Purple, candle));
     driveStick.povRight().onTrue(new InstantCommand(candle::Yellow, candle));
-  }
-  
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    // new Trigger(m_exampleSubsystem::exampleCondition)
-    //     .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-  
+    // driveStick2.povLeft().onTrue(new InstantCommand(candle::Purple, candle));
+    // driveStick2.povRight().onTrue(new InstantCommand(candle::Yellow, candle));
+    // driveStick.rightBumper().onTrue(new InstantCommand(arm::nextPose, arm));
+    // driveStick.leftBumper().onTrue(new InstantCommand(arm::previousPose, arm));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -121,7 +109,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
     return commandChooser.getSelected();
   }
 

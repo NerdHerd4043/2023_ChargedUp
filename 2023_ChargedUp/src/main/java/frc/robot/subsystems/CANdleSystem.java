@@ -22,12 +22,10 @@ public class CANdleSystem extends SubsystemBase {
 
   public void Purple () {
     candle.setLEDs(255, 0, 255);
-
   }
 
   public void Yellow () {
     candle.setLEDs(255, 255, 0);
-
   }
 
   public void TurnOff() {
