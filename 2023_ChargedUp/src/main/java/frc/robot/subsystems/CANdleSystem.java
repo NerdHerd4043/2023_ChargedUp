@@ -20,15 +20,15 @@ public class CANdleSystem extends SubsystemBase {
     config.stripType = LEDStripType.GRB;
   }
 
-  public void Purple () {
+  public void turnPurple () {
     candle.setLEDs(255, 0, 255);
   }
 
-  public void Yellow () {
+  public void turnYellow () {
     candle.setLEDs(255, 255, 0);
   }
 
-  public void TurnOff() {
+  public void turnOff() {
     candle.setLEDs(0,0,0);
   }
   

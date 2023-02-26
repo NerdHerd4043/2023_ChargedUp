@@ -94,8 +94,8 @@ public class RobotContainer {
     driveStick.b().onTrue(new InstantCommand(drivebase::flipFront, drivebase));
     driveStick.start().onTrue(new InstantCommand(drivebase::setCoastMode, drivebase));
     driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
-    driveStick.povLeft().onTrue(new InstantCommand(candle::Purple, candle));
-    driveStick.povRight().onTrue(new InstantCommand(candle::Yellow, candle));
+    driveStick.povLeft().onTrue(new InstantCommand(candle::turnPurple, candle));
+    driveStick.povRight().onTrue(new InstantCommand(candle::turnYellow, candle));
 
     // driveStick2.povLeft().onTrue(new InstantCommand(candle::Purple, candle));
     // driveStick2.povRight().onTrue(new InstantCommand(candle::Yellow, candle));
@@ -113,7 +113,7 @@ public class RobotContainer {
   }
 
   public Command getCandleOffCommand() {
-    return new InstantCommand(candle::TurnOff);
+    return new InstantCommand(candle::turnOff);
   }
 
   public Command getCoastCommand(){
