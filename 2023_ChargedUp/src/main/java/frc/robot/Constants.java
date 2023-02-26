@@ -70,8 +70,6 @@ public final class Constants {
       }
     }
   }
-  
-  
 
   public static class SlideConstants {
     public static final int slideMotorID = 21;
@@ -92,8 +90,7 @@ public final class Constants {
     }
   }
   
-    public static final class CANdleConstants {
+  public static final class CANdleConstants {
     public static final int CANdleID = 1;
-
   }
 }
