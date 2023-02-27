@@ -27,8 +27,9 @@ public final class Constants {
     public static final int frontRightMotorID = 10;
     public static final int backRightMotorID = 11;
     
-    public static final int currentLimit = 40;
+    public static final int currentLimit = 30;
     
+    public static final double speedLimit = 1;
     public static final double turnLimit = 0.6;
   }
 
@@ -72,9 +73,9 @@ public final class Constants {
   }
 
   public static class SlideConstants {
-    public static final int slideMotorID = 21;
+    public static final int slideMotorID = 22;
 
-    public static final int currentLimit = 3; 
+    public static final int currentLimit = 1; 
 
     public static final double speed = 0.4;
   }

@@ -45,7 +45,7 @@ public class RobotContainer {
   // private final Arm arm = new Arm();
 
   private static CommandXboxController driveStick = new CommandXboxController(0);
-  // private static CommandXboxController driveStick2 = new CommandXboxController(1);
+  private static CommandXboxController driveStick2 = new CommandXboxController(1);
 
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
   private PIDController pidController = new PIDController(AutoConstants.PID.kP, AutoConstants.PID.kI, AutoConstants.PID.kD);
@@ -97,8 +97,8 @@ public class RobotContainer {
     driveStick.povLeft().onTrue(new InstantCommand(candle::turnPurple, candle));
     driveStick.povRight().onTrue(new InstantCommand(candle::turnYellow, candle));
 
-    // driveStick2.povLeft().onTrue(new InstantCommand(candle::Purple, candle));
-    // driveStick2.povRight().onTrue(new InstantCommand(candle::Yellow, candle));
+    driveStick2.povLeft().onTrue(new InstantCommand(candle::turnPurple, candle));
+    driveStick2.povRight().onTrue(new InstantCommand(candle::turnYellow, candle));
     // driveStick.rightBumper().onTrue(new InstantCommand(arm::nextPose, arm));
     // driveStick.leftBumper().onTrue(new InstantCommand(arm::previousPose, arm));
   }
@@ -122,5 +122,9 @@ public class RobotContainer {
 
   public Command getBreakCommand(){
     return new InstantCommand(drivebase::setBreakMode);
+  }
+
+  public Command getOpenToFalseCommand() {
+    return new InstantCommand(slide::setOpenedToFalse);
   }
 }

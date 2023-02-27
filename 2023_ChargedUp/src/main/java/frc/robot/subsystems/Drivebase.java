@@ -20,7 +20,7 @@ public class Drivebase extends SubsystemBase {
   private CANSparkMax backLeftMotor = new CANSparkMax(DriveConstants.backLeftMotorID, MotorType.kBrushless);
   private CANSparkMax backRightMotor = new CANSparkMax(DriveConstants.backRightMotorID, MotorType.kBrushless);
 
-  private boolean rslIsFront = true;
+  private boolean limelightIsFront = true;
 
   /** Creates a new Drivebase. */
   public Drivebase() {
@@ -49,16 +49,16 @@ public class Drivebase extends SubsystemBase {
     
     diffDrive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
 
-    SmartDashboard.putBoolean("RSL Is Front", rslIsFront);
+    SmartDashboard.putBoolean("Limelight Is Front", limelightIsFront);
     SmartDashboard.putString("Motor Mode", "Coast");
   }
 
   public void arcadeDrive(double fwd, double rot, boolean sqrd) {
-    if(rslIsFront){
-      diffDrive.arcadeDrive(fwd, DriveConstants.turnLimit * rot, sqrd);
+    if(limelightIsFront){
+      diffDrive.arcadeDrive(DriveConstants.speedLimit * fwd, DriveConstants.turnLimit * rot, sqrd);
     }
     else{
-      diffDrive.arcadeDrive(-fwd, DriveConstants.turnLimit * rot, sqrd);
+      diffDrive.arcadeDrive(-DriveConstants.speedLimit * fwd, DriveConstants.turnLimit * rot, sqrd);
     }
   }
 
@@ -71,8 +71,8 @@ public class Drivebase extends SubsystemBase {
   }
 
   public void flipFront(){
-    rslIsFront = !rslIsFront;
-    SmartDashboard.putBoolean("RSL Is Front", rslIsFront);
+    limelightIsFront = !limelightIsFront;
+    SmartDashboard.putBoolean("Limelight Is Front", limelightIsFront);
   }
 
   public void setCoastMode(){

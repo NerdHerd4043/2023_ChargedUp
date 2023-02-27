@@ -95,6 +95,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
+    m_robotContainer.getOpenToFalseCommand().schedule();
     m_robotContainer.getCoastCommand().schedule();
   }
 

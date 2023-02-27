@@ -41,6 +41,6 @@ public class OpenSlide extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Timer.getFPGATimestamp() > startTime + 0.33;
+    return Timer.getFPGATimestamp() > startTime + 0.7;
   }
 }
