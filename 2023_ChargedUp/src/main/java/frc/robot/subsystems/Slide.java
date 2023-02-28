@@ -4,10 +4,13 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SlideConstants;
 
@@ -28,12 +31,22 @@ public class Slide extends SubsystemBase {
       opened = true;
     // }
   }
+
   public void close() {
     // if(opened) {
       slideMotor.set(SlideConstants.speed);
       opened = false;
     // }
   }
+
+  public void driveSlideMotor(double speed) {
+    slideMotor.set(speed);
+  }
+
+  public CommandBase driveSlideMotor(DoubleSupplier speed) {
+    return this.run(() -> this.driveSlideMotor(speed.getAsDouble()));
+  }
+
   public void stop() {
      slideMotor.stopMotor();
   }

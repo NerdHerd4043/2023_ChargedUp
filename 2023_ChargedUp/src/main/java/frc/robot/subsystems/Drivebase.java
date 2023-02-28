@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,6 +20,8 @@ public class Drivebase extends SubsystemBase {
   private CANSparkMax frontRightMotor = new CANSparkMax(DriveConstants.frontRightMotorID, MotorType.kBrushless);
   private CANSparkMax backLeftMotor = new CANSparkMax(DriveConstants.backLeftMotorID, MotorType.kBrushless);
   private CANSparkMax backRightMotor = new CANSparkMax(DriveConstants.backRightMotorID, MotorType.kBrushless);
+
+  private SlewRateLimiter slewRate = new SlewRateLimiter(DriveConstants.slewRate);
 
   private boolean limelightIsFront = true;
 
@@ -53,17 +56,26 @@ public class Drivebase extends SubsystemBase {
     SmartDashboard.putString("Motor Mode", "Coast");
   }
 
-  public void arcadeDrive(double fwd, double rot, boolean sqrd) {
+  public void arcadeDrive(double fwd, double rot, boolean sqrd, double speedLimit) {
     if(limelightIsFront){
-      diffDrive.arcadeDrive(DriveConstants.speedLimit * fwd, DriveConstants.turnLimit * rot, sqrd);
+      diffDrive.arcadeDrive(speedLimit * fwd, DriveConstants.turnLimit * rot, sqrd);
     }
     else{
-      diffDrive.arcadeDrive(-DriveConstants.speedLimit * fwd, DriveConstants.turnLimit * rot, sqrd);
+      diffDrive.arcadeDrive(-speedLimit * fwd, DriveConstants.turnLimit * rot, sqrd);
     }
   }
 
   public void arcadeDrive(double fwd, double rot) {
-    arcadeDrive(fwd, rot, false);
+    arcadeDrive(fwd, rot, false, 1);
+  }
+
+  public void slewArcadeDrive(double fwd, double rot, boolean sqrd) {
+    if(limelightIsFront){
+      diffDrive.arcadeDrive(slewRate.calculate(fwd), DriveConstants.turnLimit * rot, sqrd);
+    }
+    else{
+      diffDrive.arcadeDrive(-slewRate.calculate(fwd), DriveConstants.turnLimit * rot, sqrd);
+    }
   }
 
   public void stop(){

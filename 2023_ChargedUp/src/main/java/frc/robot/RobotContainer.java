@@ -77,6 +77,10 @@ public class RobotContainer {
             drivebase,
             () -> driveStick.getLeftY(),
             () -> driveStick.getRightX()));
+
+    slide.setDefaultCommand(
+      slide.driveSlideMotor(
+        () -> driveStick.getRightTriggerAxis() - driveStick.getLeftTriggerAxis()));
   }
 
   /**
