@@ -33,8 +33,8 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivebase.arcadeDrive(forward.getAsDouble(), rotation.getAsDouble(), true, DriveConstants.speedLimit);
-    // drivebase.slewArcadeDrive(forward.getAsDouble(), rotation.getAsDouble(), true);
+    // drivebase.arcadeDrive(forward.getAsDouble(), rotation.getAsDouble(), true, DriveConstants.speedLimit);
+    drivebase.slewArcadeDrive(forward.getAsDouble(), rotation.getAsDouble(), true);
   }
 
   // Called once the command ends or is interrupted.

@@ -23,8 +23,6 @@ public class Drivebase extends SubsystemBase {
 
   private SlewRateLimiter slewRate = new SlewRateLimiter(DriveConstants.slewRate);
 
-  private boolean limelightIsFront = true;
-
   /** Creates a new Drivebase. */
   public Drivebase() {
     backLeftMotor.restoreFactoryDefaults();
@@ -52,17 +50,11 @@ public class Drivebase extends SubsystemBase {
     
     diffDrive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
 
-    SmartDashboard.putBoolean("Limelight Is Front", limelightIsFront);
     SmartDashboard.putString("Motor Mode", "Coast");
   }
 
   public void arcadeDrive(double fwd, double rot, boolean sqrd, double speedLimit) {
-    if(limelightIsFront){
-      diffDrive.arcadeDrive(speedLimit * fwd, DriveConstants.turnLimit * rot, sqrd);
-    }
-    else{
-      diffDrive.arcadeDrive(-speedLimit * fwd, DriveConstants.turnLimit * rot, sqrd);
-    }
+    diffDrive.arcadeDrive(speedLimit * fwd, DriveConstants.turnLimit * rot, sqrd);
   }
 
   public void arcadeDrive(double fwd, double rot) {
@@ -70,21 +62,11 @@ public class Drivebase extends SubsystemBase {
   }
 
   public void slewArcadeDrive(double fwd, double rot, boolean sqrd) {
-    if(limelightIsFront){
-      diffDrive.arcadeDrive(slewRate.calculate(fwd), DriveConstants.turnLimit * rot, sqrd);
-    }
-    else{
-      diffDrive.arcadeDrive(-slewRate.calculate(fwd), DriveConstants.turnLimit * rot, sqrd);
-    }
+    diffDrive.arcadeDrive(slewRate.calculate(fwd), DriveConstants.turnLimit * rot, sqrd);
   }
 
   public void stop(){
     diffDrive.arcadeDrive(0, 0);
-  }
-
-  public void flipFront(){
-    limelightIsFront = !limelightIsFront;
-    SmartDashboard.putBoolean("Limelight Is Front", limelightIsFront);
   }
 
   public void setCoastMode(){

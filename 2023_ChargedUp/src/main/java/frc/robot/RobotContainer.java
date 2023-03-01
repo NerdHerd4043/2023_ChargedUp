@@ -52,7 +52,7 @@ public class RobotContainer {
 
   NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
-  private final TimeDrive leaveCommunity = new TimeDrive(drivebase, -0.6, 3.5);
+  private final TimeDrive leaveCommunity = new TimeDrive(drivebase, -0.4, 2.25);
   private final PidBalance pidBalance = new PidBalance(
     drivebase, pidController, gyro,
     () -> Math.abs(limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]));
@@ -95,7 +95,6 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driveStick.rightBumper().onTrue(new OpenSlide(slide));
     driveStick.leftBumper().onTrue(new CloseSlide(slide));
-    driveStick.b().onTrue(new InstantCommand(drivebase::flipFront, drivebase));
     driveStick.start().onTrue(new InstantCommand(drivebase::setCoastMode, drivebase));
     driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
     driveStick.povLeft().onTrue(new InstantCommand(candle::turnPurple, candle));
