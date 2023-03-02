@@ -28,7 +28,7 @@ public final class Constants {
     public static final int backRightMotorID = 11;
     
     public static final int currentLimit = 30;
-    public static final double slewRate = 3.8; //limits the rate of change of the signal to 3.8 units per second
+    public static final double slewRate = 2.2; //limits the rate of change of the signal to 3.8 units per second
     
     public static final double speedLimit = 1;
     public static final double turnLimit = 0.6;

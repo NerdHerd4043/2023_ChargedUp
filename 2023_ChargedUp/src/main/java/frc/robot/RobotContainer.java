@@ -95,7 +95,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     driveStick.rightBumper().onTrue(new OpenSlide(slide));
-    driveStick.leftBumper().onTrue(new CloseSlide(slide));
+     driveStick.leftBumper().onTrue(new CloseSlide(slide));
     driveStick.start().onTrue(new InstantCommand(drivebase::setCoastMode, drivebase));
     driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
     // driveStick.povLeft().onTrue(new InstantCommand(candle::turnPurple, candle));
