@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.NetworkButton;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -97,13 +98,23 @@ public class RobotContainer {
     driveStick.leftBumper().onTrue(new CloseSlide(slide));
     driveStick.start().onTrue(new InstantCommand(drivebase::setCoastMode, drivebase));
     driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
-    driveStick.povLeft().onTrue(new InstantCommand(candle::turnPurple, candle));
-    driveStick.povRight().onTrue(new InstantCommand(candle::turnYellow, candle));
+    // driveStick.povLeft().onTrue(new InstantCommand(candle::turnPurple, candle));
+    // driveStick.povRight().onTrue(new InstantCommand(candle::turnYellow, candle));
 
-    driveStick2.povLeft().onTrue(new InstantCommand(candle::turnPurple, candle));
-    driveStick2.povRight().onTrue(new InstantCommand(candle::turnYellow, candle));
+    // driveStick2.povLeft().onTrue(new InstantCommand(candle::turnPurple, candle));
+    // driveStick2.povRight().onTrue(new InstantCommand(candle::turnYellow, candle));
     // driveStick.rightBumper().onTrue(new InstantCommand(arm::nextPose, arm));
     // driveStick.leftBumper().onTrue(new InstantCommand(arm::previousPose, arm));
+
+    new NetworkButton("SmartDashboard", "Cube")
+      .or(driveStick.povLeft())
+      .or(driveStick2.povLeft())
+      .onTrue(new InstantCommand(candle::turnPurple, candle));
+
+    new NetworkButton("SmartDashboard", "Cone")
+      .or(driveStick.povRight())
+      .or(driveStick2.povRight())
+      .onTrue(new InstantCommand(candle::turnYellow, candle));
   }
 
   /**
@@ -116,18 +127,18 @@ public class RobotContainer {
   }
 
   public Command getCandleOffCommand() {
-    return new InstantCommand(candle::turnOff);
+    return new InstantCommand(candle::turnOff, candle);
   }
 
   public Command getCoastCommand(){
-    return new InstantCommand(drivebase::setCoastMode);
+    return new InstantCommand(drivebase::setCoastMode, drivebase);
   }
 
   public Command getBreakCommand(){
-    return new InstantCommand(drivebase::setBreakMode);
+    return new InstantCommand(drivebase::setBreakMode, drivebase);
   }
 
   public Command getOpenToFalseCommand() {
-    return new InstantCommand(slide::setOpenedToFalse);
+    return new InstantCommand(slide::setOpenedToFalse, slide);
   }
 }
