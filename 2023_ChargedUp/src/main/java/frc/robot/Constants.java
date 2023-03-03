@@ -31,7 +31,7 @@ public final class Constants {
   }
 
   public static class ArmConstants {
-    public static final int lowerArmMotorID = 0;
+    public static final int lowerArmMotorID = 15;
     public static final int upperArmMotorID = 1;
 
     public static final int lowerArmEncoderID = 0;
