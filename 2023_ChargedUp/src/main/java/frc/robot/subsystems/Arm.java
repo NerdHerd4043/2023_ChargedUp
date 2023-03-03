@@ -111,6 +111,14 @@ public class Arm extends DualProfiledPIDSubsystem {
     return this.run(() -> this.adjustPosition(input.getAsDouble() / 100));
   }
 
+  public CommandBase driveLowerMotor(DoubleSupplier speed){
+    return this.run(() -> lowerArmMotor.set(speed.getAsDouble() * 0.3));
+  }
+
+  public CommandBase driveUpperMotor(DoubleSupplier speed){
+    return this.run(() -> upperArmMotor.set(speed.getAsDouble() * 0.3));
+  }
+
   public void updateGoals() {
     setGoals(poses[(int)pose].lower(), poses[(int)pose].upper());
   }

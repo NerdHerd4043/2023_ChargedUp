@@ -72,11 +72,19 @@ public class RobotContainer {
 
     SmartDashboard.putData(commandChooser);
 
-    drivebase.setDefaultCommand(
-        new Drive(
-            drivebase,
-            () -> driveStick.getLeftY(),
-            () -> driveStick.getRightX()));
+    // drivebase.setDefaultCommand(
+    //     new Drive(
+    //         drivebase,
+    //         () -> driveStick.getLeftY(),
+    //         () -> driveStick.getRightX()));
+
+    arm.setDefaultCommand(
+      arm.driveLowerMotor(
+        () -> driveStick.getLeftY()));
+    
+    arm.setDefaultCommand(
+      arm.driveUpperMotor(
+        () -> driveStick.getRightY()));
 
     arm.setDefaultCommand(
       arm.adjustCommand(
