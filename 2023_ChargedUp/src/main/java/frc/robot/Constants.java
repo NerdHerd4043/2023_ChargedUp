@@ -75,6 +75,8 @@ public final class Constants {
 
   public static class SlideConstants {
     public static final int slideMotorID = 22;
+    public static final int doorClosedSwitchID = 0;
+    public static final int doorOpenedSwitchID = 1;
 
     public static final int currentLimit = 1; 
 

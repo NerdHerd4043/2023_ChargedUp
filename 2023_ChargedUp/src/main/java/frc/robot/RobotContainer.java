@@ -83,6 +83,11 @@ public class RobotContainer {
     slide.setDefaultCommand(
       slide.driveSlideMotor(
         () -> driveStick.getRightTriggerAxis() - driveStick.getLeftTriggerAxis()));
+
+    // slide.setDefaultCommand(
+    //   new SlideControl(
+    //     slide, 
+    //     () -> driveStick.getRightTriggerAxis()));
   }
 
   /**
@@ -96,11 +101,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     driveStick.rightBumper().onTrue(new OpenSlide(slide));
-     driveStick.leftBumper().onTrue(new CloseSlide(slide));
+    driveStick.leftBumper().onTrue(new CloseSlide(slide));
+    driveStick.b().onTrue(new InstantCommand(slide::closeDoor, slide));
     driveStick.start().onTrue(new InstantCommand(drivebase::setCoastMode, drivebase));
     driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
-    // driveStick.povLeft().onTrue(new InstantCommand(candle::turnPurple, candle));
-    // driveStick.povRight().onTrue(new InstantCommand(candle::turnYellow, candle));
+    driveStick.povLeft().onTrue(new InstantCommand(candle::turnPurple, candle));
+    driveStick.povRight().onTrue(new InstantCommand(candle::turnYellow, candle));
 
     // driveStick2.povLeft().onTrue(new InstantCommand(candle::turnPurple, candle));
     // driveStick2.povRight().onTrue(new InstantCommand(candle::turnYellow, candle));
@@ -137,9 +143,5 @@ public class RobotContainer {
 
   public Command getBreakCommand(){
     return new InstantCommand(drivebase::setBreakMode, drivebase);
-  }
-
-  public Command getOpenToFalseCommand() {
-    return new InstantCommand(slide::setOpenedToFalse, slide);
   }
 }
