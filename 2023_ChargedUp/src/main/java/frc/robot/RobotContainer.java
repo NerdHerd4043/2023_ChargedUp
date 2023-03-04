@@ -16,6 +16,7 @@ import frc.robot.commands.autoCommands.PidBalance;
 import frc.robot.commands.autoCommands.TimeDrive;
 import frc.robot.commands.slideCommands.*;
 
+import com.ctre.phoenix.led.CANdle;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
