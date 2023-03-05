@@ -10,7 +10,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SlideConstants;
@@ -18,10 +18,7 @@ import frc.robot.Constants.SlideConstants;
 public class Slide extends SubsystemBase {
   private CANSparkMax slideMotor = new CANSparkMax(SlideConstants.slideMotorID, MotorType.kBrushless);
 
-  private DigitalInput doorClosedSwitch = new DigitalInput(SlideConstants.doorClosedSwitchID);
-  private DigitalInput doorOpenedSwitch = new DigitalInput(SlideConstants.doorOpenedSwitchID);
-
-  private boolean opened = false;
+  // private boolean opened = false;
   private boolean closed = true;
 
   /** Creates a new Slide. */
@@ -29,19 +26,21 @@ public class Slide extends SubsystemBase {
     slideMotor.restoreFactoryDefaults(true);
     slideMotor.setSmartCurrentLimit(SlideConstants.currentLimit);
     slideMotor.setIdleMode(IdleMode.kBrake);
+
+    SmartDashboard.putBoolean("Door is Closed", closed);
   }
 
   public void open() {
     // if(!opened) {
       slideMotor.set(-SlideConstants.speed);
-      opened = true;
+      // opened = true;
     // }
   }
 
   public void close() {
     // if(opened) {
       slideMotor.set(SlideConstants.speed);
-      opened = false;
+      // opened = false;
     // }
   }
 
@@ -71,14 +70,6 @@ public class Slide extends SubsystemBase {
   
   // public boolean isOpened() {
   //   return opened;
-  // }
-
-  // public boolean getDoorClosedSwitch() {
-  //   return doorClosedSwitch.get();
-  // }
-
-  // public boolean getDoorOpenedSwitch() {
-  //   return doorOpenedSwitch.get();
   // }
 
   @Override

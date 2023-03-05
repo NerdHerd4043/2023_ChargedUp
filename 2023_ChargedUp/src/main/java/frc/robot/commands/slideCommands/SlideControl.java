@@ -6,6 +6,7 @@ package frc.robot.commands.slideCommands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Slide;
 
@@ -31,15 +32,16 @@ public class SlideControl extends CommandBase {
   @Override
   public void execute() {
     if(slide.isClosed()) {
-      slide.driveSlideMotor(0.4);
+      slide.driveSlideMotor(0.2);
 
       if(speed.getAsDouble() > 0.05) {
         slide.openDoor();
       }
     }
     else {
-      slide.driveSlideMotor(-speed.getAsDouble());
+      slide.driveSlideMotor(-speed.getAsDouble() * 0.2);
     }
+    SmartDashboard.putBoolean("Door is Closed", slide.isClosed());
   }
 
   // Called once the command ends or is interrupted.

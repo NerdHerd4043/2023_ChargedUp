@@ -16,21 +16,22 @@ import frc.robot.commands.autoCommands.PidBalance;
 import frc.robot.commands.autoCommands.TimeDrive;
 import frc.robot.commands.slideCommands.*;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix.led.CANdle;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.SPI;
-// import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.NetworkButton;
-// import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -51,15 +52,20 @@ public class RobotContainer {
 
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
   private PIDController pidController = new PIDController(AutoConstants.PID.kP, AutoConstants.PID.kI, AutoConstants.PID.kD);
+  private MedianFilter filter = new MedianFilter(AutoConstants.medianFilter);
 
   NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  
+  private final DoubleSupplier filteredXPose = 
+    () -> filter.calculate(
+      Math.abs(limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]));
 
   private final TimeDrive leaveCommunity = new TimeDrive(drivebase, -0.4, 2.25);
   private final PidBalance pidBalance = new PidBalance(
-    drivebase, pidController, gyro,
-    () -> Math.abs(limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]));
+    drivebase, pidController, gyro, filteredXPose
+    );
 
-  private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, slide, pidController, gyro);
+  private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, slide, pidController, gyro, filteredXPose);
 
   SendableChooser<Command> commandChooser = new SendableChooser<>();
 
@@ -81,13 +87,9 @@ public class RobotContainer {
             () -> driveStick.getRightX()));
 
     slide.setDefaultCommand(
-      slide.driveSlideMotor(
-        () -> driveStick.getRightTriggerAxis() - driveStick.getLeftTriggerAxis()));
-
-    // slide.setDefaultCommand(
-    //   new SlideControl(
-    //     slide, 
-    //     () -> driveStick.getRightTriggerAxis()));
+      new SlideControl(
+        slide, 
+        () -> driveStick.getRightTriggerAxis()));
   }
 
   /**
@@ -100,16 +102,16 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureButtonBindings() {
-    driveStick.rightBumper().onTrue(new OpenSlide(slide));
-    driveStick.leftBumper().onTrue(new CloseSlide(slide));
+    // driveStick.rightBumper().onTrue(new OpenSlide(slide));
+    // driveStick.leftBumper().onTrue(new CloseSlide(slide));
     driveStick.b().onTrue(new InstantCommand(slide::closeDoor, slide));
     driveStick.start().onTrue(new InstantCommand(drivebase::setCoastMode, drivebase));
     driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
-    driveStick.povLeft().onTrue(new InstantCommand(candle::turnPurple, candle));
-    driveStick.povRight().onTrue(new InstantCommand(candle::turnYellow, candle));
+    driveStick.rightBumper().onTrue(new InstantCommand(candle::turnPurple, candle));
+    driveStick.leftBumper().onTrue(new InstantCommand(candle::turnYellow, candle));
 
-    // driveStick2.povLeft().onTrue(new InstantCommand(candle::turnPurple, candle));
-    // driveStick2.povRight().onTrue(new InstantCommand(candle::turnYellow, candle));
+    driveStick2.rightBumper().onTrue(new InstantCommand(candle::turnPurple, candle));
+    driveStick2.leftBumper().onTrue(new InstantCommand(candle::turnYellow, candle));
     // driveStick.rightBumper().onTrue(new InstantCommand(arm::nextPose, arm));
     // driveStick.leftBumper().onTrue(new InstantCommand(arm::previousPose, arm));
 

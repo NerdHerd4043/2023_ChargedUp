@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,7 +34,7 @@ public class PidBalance extends PIDCommand {
         // The controller that the command will use
         pidController,
         // This should return the measurement
-        xPose,
+        () -> xPose.getAsDouble(),
         // This should return the setpoint (can also be a constant)
         () -> AutoConstants.chargeStationCenterPose,
         // This uses the output
@@ -44,15 +45,15 @@ public class PidBalance extends PIDCommand {
               drivebase.arcadeDrive(0.3, 0); // When the apriltag comes into view, the output defaults to a high positive number
             } 
             else { // else -> drive like normal with a max speed of 0.5
-              drivebase.arcadeDrive(-Math.min(output, 0.5), 0);
+              drivebase.arcadeDrive(-Math.min(output, 0.3), 0);
             }
           } 
           else {
             if (gyro.getRoll() >= 6.5) { // if the tag isn't seen and the charge station is tilted towards it, drive backwards                                  
-              drivebase.arcadeDrive(0.4, 0);
+              drivebase.arcadeDrive(0.3, 0);
             }
             else if (gyro.getRoll() <= -6.5) {
-              drivebase.arcadeDrive(-0.4, 0);
+              drivebase.arcadeDrive(-0.3, 0);
             }
             else{  // tag isn't visible on other occasions -> stop robot
               drivebase.stop();

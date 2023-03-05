@@ -28,7 +28,7 @@ public final class Constants {
     public static final int backRightMotorID = 11;
     
     public static final int currentLimit = 30;
-    public static final double slewRate = 4; //4 without slide, 2.2 with slide
+    public static final double slewRate = 2.2; //4 without slide, 2.2 with slide
     
     public static final double speedLimit = 1;
     public static final double turnLimit = 0.6;
@@ -75,8 +75,6 @@ public final class Constants {
 
   public static class SlideConstants {
     public static final int slideMotorID = 22;
-    public static final int doorClosedSwitchID = 0;
-    public static final int doorOpenedSwitchID = 1;
 
     public static final int currentLimit = 1; 
 
@@ -84,13 +82,15 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double chargeStationCenterPose = 4.7; //X position of the center of the charge station
+    public static final double chargeStationCenterPose = 4.4; //X position of the center of the charge station
     //At comp: 4.4, at shop: 4.7
     
+    public static final int medianFilter = 5;
+
     public static final class PID {
-      public static final double kP = 2;
+      public static final double kP = 0.5;
       public static final double kI = 0;
-      public static final double kD = 0.01;
+      public static final double kD = 0.015;
     }
   }
   
