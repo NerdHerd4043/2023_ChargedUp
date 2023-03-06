@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.LayoutType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANdleConstants;
 
@@ -40,22 +41,21 @@ public class CANdleSystem extends SubsystemBase {
 
   public void turnPurple () {
     candle.setLEDs(255, 0, 255);
+    SmartDashboard.putString("CANdle Light", "Cube");
   }
 
   public void turnYellow () {
     candle.setLEDs(255, 255, 0);
+    SmartDashboard.putString("CANdle Light", "Cone");
   }
 
   public void turnOff() {
     candle.setLEDs(0,0,0);
+    SmartDashboard.putString("CANdle Light", "CANdle Off");
   }
   
   public GenericEntry getCubeButtonEntry() {
     return cubeButton;
-  }
-
-  public GenericEntry getConeButtonEntry() {
-    return coneButton;
   }
 
   @Override
