@@ -18,7 +18,6 @@ import frc.robot.commands.slideCommands.*;
 
 import java.util.function.DoubleSupplier;
 
-import com.ctre.phoenix.led.CANdle;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -30,8 +29,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.NetworkButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -60,12 +60,29 @@ public class RobotContainer {
     () -> filter.calculate(
       Math.abs(limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]));
 
-  private final TimeDrive leaveCommunity = new TimeDrive(drivebase, -0.4, 2.25);
+  private final TimeDrive leaveCommunityTime = new TimeDrive(drivebase, -0.4, 2.25);
+  private final TimeDrive overChargeStation = new TimeDrive(drivebase, -0.3, 3.3);
   private final PidBalance pidBalance = new PidBalance(
-    drivebase, pidController, gyro, filteredXPose
-    );
+    drivebase, pidController, gyro, filteredXPose);
 
-  private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, slide, pidController, gyro, filteredXPose);
+  private final SequentialCommandGroup scorePreload = new SequentialCommandGroup(
+    new OpenSlide(slide),
+    new WaitCommand(0.5),
+    new CloseSlide(slide)
+  );
+
+  // private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, slide, pidController, gyro, filteredXPose);
+  private final SequentialCommandGroup balanceOnPlatform = new SequentialCommandGroup(
+    scorePreload,
+    overChargeStation,
+    pidBalance
+  );
+
+  private final SequentialCommandGroup leaveCommunity = new SequentialCommandGroup(
+    scorePreload,
+    leaveCommunityTime
+  );
+
 
   SendableChooser<Command> commandChooser = new SendableChooser<>();
 
@@ -102,8 +119,6 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureButtonBindings() {
-    // driveStick.rightBumper().onTrue(new OpenSlide(slide));
-    // driveStick.leftBumper().onTrue(new CloseSlide(slide));
     driveStick.b().onTrue(new InstantCommand(slide::closeDoor, slide));
     driveStick.start().onTrue(new InstantCommand(drivebase::setCoastMode, drivebase));
     driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
@@ -114,16 +129,6 @@ public class RobotContainer {
     driveStick2.leftBumper().onTrue(new InstantCommand(candle::turnYellow, candle));
     // driveStick.rightBumper().onTrue(new InstantCommand(arm::nextPose, arm));
     // driveStick.leftBumper().onTrue(new InstantCommand(arm::previousPose, arm));
-
-    new NetworkButton("SmartDashboard", "Cube")
-      .or(driveStick.povLeft())
-      .or(driveStick2.povLeft())
-      .onTrue(new InstantCommand(candle::turnPurple, candle));
-
-    new NetworkButton("SmartDashboard", "Cone")
-      .or(driveStick.povRight())
-      .or(driveStick2.povRight())
-      .onTrue(new InstantCommand(candle::turnYellow, candle));
   }
 
   /**

@@ -4,13 +4,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.LayoutType;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANdleConstants;
@@ -20,10 +13,6 @@ import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 
 public class CANdleSystem extends SubsystemBase {
-  ShuffleboardTab sd = Shuffleboard.getTab("SmartDashboard");
-
-  GenericEntry cubeButton;
-  GenericEntry coneButton;
 
   CANdle candle = new CANdle(CANdleConstants.CANdleID);
 
@@ -31,12 +20,6 @@ public class CANdleSystem extends SubsystemBase {
   public CANdleSystem() {
     CANdleConfiguration config = new CANdleConfiguration();
     config.stripType = LEDStripType.GRB;
-
-    ShuffleboardLayout ledContainer = sd
-      .getLayout("LED Control", BuiltInLayouts.kList);
-
-    cubeButton = ledContainer.add("Cube", false).getEntry();
-    coneButton = ledContainer.add("Cone", false).getEntry();
   }
 
   public void turnPurple () {
@@ -52,10 +35,6 @@ public class CANdleSystem extends SubsystemBase {
   public void turnOff() {
     candle.setLEDs(0,0,0);
     SmartDashboard.putString("CANdle Light", "CANdle Off");
-  }
-  
-  public GenericEntry getCubeButtonEntry() {
-    return cubeButton;
   }
 
   @Override
