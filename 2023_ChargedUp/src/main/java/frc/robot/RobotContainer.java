@@ -46,8 +46,8 @@ public class RobotContainer {
   private final Drivebase drivebase = new Drivebase();
   private final Slide slide = new Slide();
   private final CANdleSystem candle = new CANdleSystem();
-  // private final Arm arm = new Arm();
   private final Foot foot = new Foot();
+  // private final Arm arm = new Arm();
 
   private static CommandXboxController driveStick = new CommandXboxController(0);
   private static CommandXboxController driveStick2 = new CommandXboxController(1);
@@ -77,7 +77,8 @@ public class RobotContainer {
   private final SequentialCommandGroup balanceOnPlatform = new SequentialCommandGroup(
     scorePreload,
     overChargeStation,
-    pidBalance
+    pidBalance,
+    new InstantCommand(foot::down, foot)
   );
 
   private final SequentialCommandGroup leaveCommunity = new SequentialCommandGroup(
@@ -122,6 +123,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     driveStick.b().onTrue(new InstantCommand(slide::closeDoor, slide));
+    driveStick.x().onTrue(new InstantCommand(foot::switchPosition, foot));
     driveStick.start().onTrue(new InstantCommand(drivebase::setCoastMode, drivebase));
     driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
     driveStick.rightBumper().onTrue(new InstantCommand(candle::turnPurple, candle));
@@ -146,11 +148,15 @@ public class RobotContainer {
     return new InstantCommand(candle::turnOff, candle);
   }
 
-  public Command getCoastCommand(){
+  public Command getCoastCommand() {
     return new InstantCommand(drivebase::setCoastMode, drivebase);
   }
 
-  public Command getBreakCommand(){
+  public Command getBreakCommand() {
     return new InstantCommand(drivebase::setBreakMode, drivebase);
+  }
+
+  public Command getFootUpCommand() {
+    return new InstantCommand(foot::up, foot);
   }
 }

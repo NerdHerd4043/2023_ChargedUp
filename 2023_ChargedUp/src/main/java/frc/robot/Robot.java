@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     m_robotContainer.getCandleOffCommand().ignoringDisable(true).schedule();
-    m_robotContainer.getBreakCommand().schedule();
+    m_robotContainer.getBreakCommand().ignoringDisable(true).schedule();
   }
 
   @Override
@@ -99,7 +99,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    m_robotContainer.getCoastCommand().schedule();
+    m_robotContainer.getCoastCommand().andThen(m_robotContainer.getFootUpCommand()).schedule();
   }
 
   /** This function is called periodically during operator control. */
