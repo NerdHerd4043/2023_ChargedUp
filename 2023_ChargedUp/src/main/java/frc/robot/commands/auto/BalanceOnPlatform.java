@@ -4,10 +4,11 @@
 
 package frc.robot.commands.auto;
 
+import java.util.function.DoubleSupplier;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.autoCommands.*;
@@ -21,7 +22,7 @@ import frc.robot.subsystems.Slide;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class BalanceOnPlatform extends SequentialCommandGroup {
   /** Creates a new BalanceOnPlatform. */
-  public BalanceOnPlatform(Drivebase drivebase, Slide slide, PIDController pidController, AHRS gyro) {
+  public BalanceOnPlatform(Drivebase drivebase, Slide slide, PIDController pidController, AHRS gyro, DoubleSupplier xPose) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -29,10 +30,9 @@ public class BalanceOnPlatform extends SequentialCommandGroup {
       new OpenSlide(slide),
       new WaitCommand(0.5),
       new CloseSlide(slide),
-      new TimeDrive(drivebase, -0.6, 3),
+      new TimeDrive(drivebase, -0.3, 3.3),
       new PidBalance(
-        drivebase, pidController, gyro,
-        () -> Math.abs(NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose").getDoubleArray(new Double[0])[0]))
+        drivebase, pidController, gyro, xPose)
     );
   }
 }
