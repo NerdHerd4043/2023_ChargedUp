@@ -81,6 +81,10 @@ public final class Constants {
     public static final double speed = 0.4;
   }
 
+  public static final class FootConstants {
+    public static final int portId = 3;
+  }
+
   public static final class AutoConstants {
     public static final double chargeStationCenterPose = 4.4; //X position of the center of the charge station
     //At comp: 4.4, at shop: 4.7

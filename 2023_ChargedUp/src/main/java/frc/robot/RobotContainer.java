@@ -8,6 +8,7 @@ package frc.robot;
 
 import frc.robot.subsystems.CANdleSystem;
 import frc.robot.subsystems.Drivebase;
+import frc.robot.subsystems.Foot;
 import frc.robot.subsystems.Slide;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.Drive;
@@ -46,6 +47,7 @@ public class RobotContainer {
   private final Slide slide = new Slide();
   private final CANdleSystem candle = new CANdleSystem();
   // private final Arm arm = new Arm();
+  private final Foot foot = new Foot();
 
   private static CommandXboxController driveStick = new CommandXboxController(0);
   private static CommandXboxController driveStick2 = new CommandXboxController(1);
@@ -90,8 +92,8 @@ public class RobotContainer {
       new SlideControl(
         slide, 
         () -> driveStick.getRightTriggerAxis()));
-  }
-
+      }
+    
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
