@@ -4,12 +4,35 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.Drive;
+
+
+import frc.robot.subsystems.CANdleSystem;
 import frc.robot.subsystems.Drivebase;
-import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.subsystems.Foot;
+import frc.robot.subsystems.Slide;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.commands.Drive;
+import frc.robot.commands.auto.BalanceOnPlatform;
+import frc.robot.commands.auto.LeaveCommunity;
+import frc.robot.commands.autoCommands.PidBalance;
+import frc.robot.commands.autoCommands.TimeDrive;
+import frc.robot.commands.slideCommands.*;
+
+import java.util.function.DoubleSupplier;
+
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.MedianFilter;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -22,25 +45,81 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivebase drivebase = new Drivebase();
+  private final Slide slide = new Slide();
+  private final CANdleSystem candle = new CANdleSystem();
+  private final Foot foot = new Foot();
+  // private final Arm arm = new Arm();
 
-  private static XboxController driveStick = new XboxController(0);
+  private static CommandXboxController driveStick = new CommandXboxController(0);
+  private static CommandXboxController driveStick2 = new CommandXboxController(1);
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  // private final CommandXboxController m_driverController =
-  //     new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  public AHRS gyro = new AHRS(SPI.Port.kMXP);
+  private PIDController pidController = new PIDController(AutoConstants.PID.kP, AutoConstants.PID.kI, AutoConstants.PID.kD);
+  private MedianFilter filter = new MedianFilter(AutoConstants.medianFilter);
+
+  NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  
+  private final DoubleSupplier filteredXPose = 
+    () -> filter.calculate(
+      Math.abs(limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]));
+
+  // private final TimeDrive leaveCommunityTime = new TimeDrive(drivebase, -0.4, 2.6);
+  // private final TimeDrive overChargeStation = new TimeDrive(drivebase, -0.3, 4);
+  private final PidBalance pidBalance = new PidBalance(
+    drivebase, pidController, gyro, filteredXPose);
+
+  private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, slide, foot, pidController, gyro, filteredXPose);
+  private final LeaveCommunity leaveCommunity = new LeaveCommunity(drivebase, slide);
+  // private final SequentialCommandGroup balanceOnPlatform = new SequentialCommandGroup(
+  //   new OpenSlide(slide),
+  //   new WaitCommand(0.5),
+  //   new CloseSlide(slide),
+  //   new TimeDrive(drivebase, -0.3, 4),
+  //   new WaitCommand(0.5),
+  //   pidBalance,
+  //   new InstantCommand(foot::down, foot)
+  // );
+
+  // private final SequentialCommandGroup leaveCommunity = new SequentialCommandGroup(
+  //   new OpenSlide(slide),
+  //   new WaitCommand(0.5),
+  //   new CloseSlide(slide),
+  //   new TimeDrive(drivebase, -0.4, 2.6)
+  // );
+
+  // private final SequentialCommandGroup scorePreload = new SequentialCommandGroup(
+  //   new OpenSlide(slide),
+  //   new WaitCommand(0.5),
+  //   new CloseSlide(slide)
+  // );
+
+
+  SendableChooser<Command> commandChooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    configureBindings();
+    configureButtonBindings();
+
+    commandChooser.addOption("Balance with PID", pidBalance);
+    commandChooser.addOption("Leave the Community", leaveCommunity);
+    commandChooser.addOption("Leave Community and Balance", balanceOnPlatform);
+    // commandChooser.addOption("Score Preload", scorePreload);
+
+    SmartDashboard.putData(commandChooser);
 
     drivebase.setDefaultCommand(
         new Drive(
             drivebase,
             () -> driveStick.getLeftY(),
             () -> driveStick.getRightX()));
-  }
 
+    slide.setDefaultCommand(
+      new SlideControl(
+        slide, 
+        () -> driveStick.getRightTriggerAxis()));
+      }
+    
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -50,14 +129,18 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    // new Trigger(m_exampleSubsystem::exampleCondition)
-    //     .onTrue(new ExampleCommand(m_exampleSubsystem));
+  private void configureButtonBindings() {
+    driveStick.b().onTrue(new InstantCommand(slide::closeDoor, slide));
+    driveStick.x().onTrue(new InstantCommand(foot::switchPosition, foot));
+    driveStick.start().onTrue(new InstantCommand(drivebase::setCoastMode, drivebase));
+    driveStick.back().onTrue(new InstantCommand(drivebase::setBreakMode, drivebase));
+    driveStick.rightBumper().onTrue(new InstantCommand(candle::turnPurple, candle));
+    driveStick.leftBumper().onTrue(new InstantCommand(candle::turnYellow, candle));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    driveStick2.rightBumper().onTrue(new InstantCommand(candle::turnPurple, candle));
+    driveStick2.leftBumper().onTrue(new InstantCommand(candle::turnYellow, candle));
+    // driveStick.rightBumper().onTrue(new InstantCommand(arm::nextPose, arm));
+    // driveStick.leftBumper().onTrue(new InstantCommand(arm::previousPose, arm));
   }
 
   /**
@@ -66,8 +149,22 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    // return Autos.exampleAuto(m_exampleSubsystem);
-    return null;
+    return commandChooser.getSelected();
+  }
+
+  public Command getCandleOffCommand() {
+    return new InstantCommand(candle::turnOff, candle);
+  }
+
+  public Command getCoastCommand() {
+    return new InstantCommand(drivebase::setCoastMode, drivebase);
+  }
+
+  public Command getBreakCommand() {
+    return new InstantCommand(drivebase::setBreakMode, drivebase);
+  }
+
+  public Command getFootUpCommand() {
+    return new InstantCommand(foot::up, foot);
   }
 }
