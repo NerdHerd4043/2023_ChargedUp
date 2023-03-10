@@ -73,7 +73,7 @@ public class PidBalance extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (gyro.getRoll() >= -1 && gyro.getRoll() <= 1.8 &&
+    if (gyro.getRoll() >= -4 && gyro.getRoll() <= -2 &&
         Math.abs(NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose")
         .getDoubleArray(new Double[0])[0]) >= 4) {
       if (firstCheck) {
