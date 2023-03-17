@@ -69,7 +69,7 @@ public class RobotContainer {
     drivebase, pidController, gyro, filteredXPose);
 
   private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, slide, foot, pidController, gyro, filteredXPose);
-  private final LeaveCommunity leaveCommunity = new LeaveCommunity(drivebase, slide);
+  private final LeaveCommunity leaveCommunity = new LeaveCommunity(drivebase, slide, gyro);
   // private final SequentialCommandGroup balanceOnPlatform = new SequentialCommandGroup(
   //   new OpenSlide(slide),
   //   new WaitCommand(0.5),

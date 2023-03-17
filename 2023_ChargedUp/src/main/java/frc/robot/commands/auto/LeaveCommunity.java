@@ -4,6 +4,8 @@
 
 package frc.robot.commands.auto;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.autoCommands.TimeDrive;
@@ -17,7 +19,7 @@ import frc.robot.subsystems.Slide;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class LeaveCommunity extends SequentialCommandGroup {
   /** Creates a new leaveCommunity. */
-  public LeaveCommunity(Drivebase drivebase, Slide slide) {
+  public LeaveCommunity(Drivebase drivebase, Slide slide, AHRS gyro) {
     // Add your commands in the addcommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(

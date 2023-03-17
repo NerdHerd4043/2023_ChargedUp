@@ -75,7 +75,7 @@ public class PidBalance extends PIDCommand {
   public boolean isFinished() {
     if (gyro.getRoll() >= -3 && gyro.getRoll() <= -1.5 &&
         Math.abs(NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose")
-        .getDoubleArray(new Double[0])[0]) >= 4.1) {
+        .getDoubleArray(new Double[0])[0]) >= 4.5) {
       if (firstCheck) {
         timerStart = Timer.getFPGATimestamp();
         firstCheck = false;
