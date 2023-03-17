@@ -13,6 +13,7 @@ import frc.robot.subsystems.Slide;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.Drive;
 import frc.robot.commands.auto.BalanceOnPlatform;
+import frc.robot.commands.auto.LeaveCommunity;
 import frc.robot.commands.autoCommands.PidBalance;
 import frc.robot.commands.autoCommands.TimeDrive;
 import frc.robot.commands.slideCommands.*;
@@ -62,29 +63,35 @@ public class RobotContainer {
     () -> filter.calculate(
       Math.abs(limelightTable.getEntry("botpose").getDoubleArray(new Double[0])[0]));
 
-  private final TimeDrive leaveCommunityTime = new TimeDrive(drivebase, -0.4, 2.25);
-  private final TimeDrive overChargeStation = new TimeDrive(drivebase, -0.3, 3.3);
+  // private final TimeDrive leaveCommunityTime = new TimeDrive(drivebase, -0.4, 2.6);
+  // private final TimeDrive overChargeStation = new TimeDrive(drivebase, -0.3, 4);
   private final PidBalance pidBalance = new PidBalance(
     drivebase, pidController, gyro, filteredXPose);
 
-  private final SequentialCommandGroup scorePreload = new SequentialCommandGroup(
-    new OpenSlide(slide),
-    new WaitCommand(0.5),
-    new CloseSlide(slide)
-  );
+  private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, slide, foot, pidController, gyro, filteredXPose);
+  private final LeaveCommunity leaveCommunity = new LeaveCommunity(drivebase, slide);
+  // private final SequentialCommandGroup balanceOnPlatform = new SequentialCommandGroup(
+  //   new OpenSlide(slide),
+  //   new WaitCommand(0.5),
+  //   new CloseSlide(slide),
+  //   new TimeDrive(drivebase, -0.3, 4),
+  //   new WaitCommand(0.5),
+  //   pidBalance,
+  //   new InstantCommand(foot::down, foot)
+  // );
 
-  // private final BalanceOnPlatform balanceOnPlatform = new BalanceOnPlatform(drivebase, slide, pidController, gyro, filteredXPose);
-  private final SequentialCommandGroup balanceOnPlatform = new SequentialCommandGroup(
-    scorePreload,
-    overChargeStation,
-    pidBalance,
-    new InstantCommand(foot::down, foot)
-  );
+  // private final SequentialCommandGroup leaveCommunity = new SequentialCommandGroup(
+  //   new OpenSlide(slide),
+  //   new WaitCommand(0.5),
+  //   new CloseSlide(slide),
+  //   new TimeDrive(drivebase, -0.4, 2.6)
+  // );
 
-  private final SequentialCommandGroup leaveCommunity = new SequentialCommandGroup(
-    scorePreload,
-    leaveCommunityTime
-  );
+  // private final SequentialCommandGroup scorePreload = new SequentialCommandGroup(
+  //   new OpenSlide(slide),
+  //   new WaitCommand(0.5),
+  //   new CloseSlide(slide)
+  // );
 
 
   SendableChooser<Command> commandChooser = new SendableChooser<>();
@@ -97,6 +104,7 @@ public class RobotContainer {
     commandChooser.addOption("Balance with PID", pidBalance);
     commandChooser.addOption("Leave the Community", leaveCommunity);
     commandChooser.addOption("Leave Community and Balance", balanceOnPlatform);
+    // commandChooser.addOption("Score Preload", scorePreload);
 
     SmartDashboard.putData(commandChooser);
 

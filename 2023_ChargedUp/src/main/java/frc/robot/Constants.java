@@ -74,7 +74,7 @@ public final class Constants {
   }
 
   public static class SlideConstants {
-    public static final int slideMotorID = 22;
+    public static final int slideMotorID = 30;
 
     public static final int currentLimit = 1; 
 
@@ -94,7 +94,7 @@ public final class Constants {
     public static final class PID {
       public static final double kP = 0.5;
       public static final double kI = 0;
-      public static final double kD = 0.015;
+      public static final double kD = 0.0098;
     }
   }
   

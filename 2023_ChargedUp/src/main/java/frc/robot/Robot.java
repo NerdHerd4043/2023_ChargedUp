@@ -99,7 +99,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    m_robotContainer.getCoastCommand().andThen(m_robotContainer.getFootUpCommand()).schedule();
+    m_robotContainer.getBreakCommand().andThen(m_robotContainer.getFootUpCommand()).schedule();
   }
 
   /** This function is called periodically during operator control. */

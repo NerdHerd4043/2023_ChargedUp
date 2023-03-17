@@ -4,39 +4,27 @@
 
 package frc.robot.commands.auto;
 
-import java.util.function.DoubleSupplier;
-
-import com.kauailabs.navx.frc.AHRS;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.autoCommands.*;
+import frc.robot.commands.autoCommands.TimeDrive;
 import frc.robot.commands.slideCommands.CloseSlide;
 import frc.robot.commands.slideCommands.OpenSlide;
 import frc.robot.subsystems.Drivebase;
-import frc.robot.subsystems.Foot;
 import frc.robot.subsystems.Slide;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class BalanceOnPlatform extends SequentialCommandGroup {
-  /** Creates a new BalanceOnPlatform. */
-  public BalanceOnPlatform(Drivebase drivebase, Slide slide, Foot foot, PIDController pidController, AHRS gyro, DoubleSupplier xPose) {
-    // Add your commands in the addCommands() call, e.g.
+public class LeaveCommunity extends SequentialCommandGroup {
+  /** Creates a new leaveCommunity. */
+  public LeaveCommunity(Drivebase drivebase, Slide slide) {
+    // Add your commands in the addcommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      //Drop piece
       new OpenSlide(slide),
       new WaitCommand(0.5),
       new CloseSlide(slide),
-      new TimeDrive(drivebase, -0.32, 3.9), //.3, 3.8
-      new WaitCommand(0.5),
-      new PidBalance(
-        drivebase, pidController, gyro, xPose),
-      new InstantCommand(foot::down, foot)
+      new TimeDrive(drivebase, -0.4, 2.6)
     );
   }
 }
