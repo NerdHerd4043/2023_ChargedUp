@@ -44,15 +44,15 @@ public class PidBalance extends PIDCommand {
               drivebase.arcadeDrive(0.3, 0); // When the apriltag comes into view, the output defaults to a high positive number
             } 
             else { // else -> drive like normal with a max speed of 0.5
-              drivebase.arcadeDrive(-Math.min(output, 0.35), 0); //.3
+              drivebase.arcadeDrive(-Math.min(output, 0.3), 0); //.3
             }
           } 
           else {
             if (gyro.getRoll() >= 6.5) { // if the tag isn't seen and the charge station is tilted towards it, drive backwards                                  
-              drivebase.arcadeDrive(0.4, 0);
+              drivebase.arcadeDrive(0.2, 0);
             }
             else if (gyro.getRoll() <= -6.5) {  // if the tag isn't seen and the charge station is tilted away from it, drive forwards
-              drivebase.arcadeDrive(-0.4, 0);
+              drivebase.arcadeDrive(-0.2, 0);
             }
             else{  // tag isn't visible on other occasions -> stop robot
               drivebase.stop();
@@ -73,9 +73,9 @@ public class PidBalance extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (gyro.getRoll() >= -3 && gyro.getRoll() <= -1.5 &&
+    if (gyro.getRoll() >= -1 && gyro.getRoll() <= 2 &&
         Math.abs(NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose")
-        .getDoubleArray(new Double[0])[0]) >= 4.5) {
+        .getDoubleArray(new Double[0])[0]) >= 4.1) {
       if (firstCheck) {
         timerStart = Timer.getFPGATimestamp();
         firstCheck = false;

@@ -32,13 +32,13 @@ public class BalanceOnPlatform extends SequentialCommandGroup {
       new OpenSlide(slide),
       new WaitCommand(0.5),
       new CloseSlide(slide),
-      new DriveOverChargeStation(drivebase, gyro, -0.5),
-      new TimeDrive(drivebase, -0.5, 0.5),
+      new DriveOverChargeStation(drivebase, gyro, -0.3),
+      new TimeDrive(drivebase, -0.3, 0.7),
       // new TimeDrive(drivebase, -0.32, 3.9),
       new WaitCommand(0.5),
       new PidBalance(
-        drivebase, pidController, gyro, xPose),
-      new InstantCommand(foot::down, foot)
+        drivebase, pidController, gyro, xPose)
+      // new InstantCommand(foot::down, foot)
     );
   }
 }

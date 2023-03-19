@@ -15,7 +15,7 @@ public class DriveOverChargeStation extends CommandBase {
   AHRS gyro;
   double speed;
   double timerStart = 0;
-  double timerEnd = 5;
+  double timerEnd = 3;
 
   /** Creates a new DriveOverChargeStation. */
   public DriveOverChargeStation(Drivebase drivebase, AHRS gyro, double speed) {
@@ -35,7 +35,7 @@ public class DriveOverChargeStation extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivebase.arcadeDrive(speed, 0);
+    drivebase.arcadeDrive(-speed, 0);
   }
 
   // Called once the command ends or is interrupted.
