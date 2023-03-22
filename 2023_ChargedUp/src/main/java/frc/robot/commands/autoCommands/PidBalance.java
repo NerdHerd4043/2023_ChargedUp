@@ -44,7 +44,7 @@ public class PidBalance extends PIDCommand {
               drivebase.arcadeDrive(0.3, 0); // When the apriltag comes into view, the output defaults to a high positive number
             } 
             else { // else -> drive like normal with a max speed of 0.5
-              drivebase.arcadeDrive(-Math.min(output, 0.3), 0); //.3
+              drivebase.arcadeDrive(-Math.min(output, 0.32), 0); //.3
             }
           } 
           else {

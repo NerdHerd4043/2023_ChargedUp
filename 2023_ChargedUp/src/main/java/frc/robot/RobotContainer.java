@@ -101,7 +101,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureButtonBindings();
 
-    commandChooser.addOption("Balance with PID", pidBalance);
+    // commandChooser.addOption("Balance with PID", pidBalance);
     commandChooser.addOption("Leave the Community", leaveCommunity);
     commandChooser.addOption("Leave Community and Balance", balanceOnPlatform);
     // commandChooser.addOption("Score Preload", scorePreload);
