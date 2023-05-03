@@ -70,7 +70,7 @@ public class RobotContainer {
 
     arm.setDefaultCommand(
       arm.adjustCommand(
-        () -> driveStick.getRightTriggerAxis() - driveStick.getLeftTriggerAxis()));
+        () -> (driveStick.getRightTriggerAxis() - driveStick.getLeftTriggerAxis()) / 40));
   }
 
   /**
@@ -91,8 +91,8 @@ public class RobotContainer {
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    driveStick.rightBumper().onTrue(new InstantCommand(arm::incrementPosition));
-    driveStick.leftBumper().onTrue(new InstantCommand(arm::decrementPosition));
+    driveStick.b().onTrue(new InstantCommand(arm::incrementPosition));
+    driveStick.a().onTrue(new InstantCommand(arm::decrementPosition));
   }
 
   /**
