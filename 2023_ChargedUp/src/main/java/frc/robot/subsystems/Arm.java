@@ -43,46 +43,46 @@ public class Arm extends DualProfiledPIDSubsystem {
   private double currentPosition = 0;
 
   // Sim stuff start
-  private final DCMotor gearbox = DCMotor.getNEO(1);
+  // private final DCMotor gearbox = DCMotor.getNEO(1);
+  //
+  // private final double lowerMotorReduction = 12;
+  // private final double upperMotorReduction = 9;
+  //
+  // private final double lowerMass = Units.lbsToKilograms(5);
+  // private final double upperMass = Units.lbsToKilograms(5);
+  //
+  // private final double lowerLength = Units.inchesToMeters(26.5);
+  // private final double upperLength = Units.inchesToMeters(33);
+  //
+  // private final double lowerMinAngle = -120;
+  // private final double lowerMaxAngle = 120;
+  // private final double upperMinAngle = -175;
+  // private final double upperMaxAngle = 175;
 
-  private final double lowerMotorReduction = 12;
-  private final double upperMotorReduction = 9;
-
-  private final double lowerMass = Units.lbsToKilograms(5);
-  private final double upperMass = Units.lbsToKilograms(5);
-
-  private final double lowerLength = Units.inchesToMeters(26.5);
-  private final double upperLength = Units.inchesToMeters(33);
-
-  private final double lowerMinAngle = -120;
-  private final double lowerMaxAngle = 120;
-  private final double upperMinAngle = -175;
-  private final double upperMaxAngle = 175;
-
-  private final SingleJointedArmSim lowerArmSim =
-      new SingleJointedArmSim(
-              gearbox,
-              lowerMotorReduction,
-              SingleJointedArmSim.estimateMOI(lowerLength, lowerMass),
-              lowerLength,
-              Units.degreesToRadians(lowerMinAngle),
-              Units.degreesToRadians(lowerMaxAngle),
-              lowerMass,
-              true);
-  private final SingleJointedArmSim upperArmSim =
-      new SingleJointedArmSim(
-              gearbox,
-              upperMotorReduction,
-              SingleJointedArmSim.estimateMOI(upperLength, upperMass),
-              upperLength,
-              Units.degreesToRadians(upperMinAngle),
-              Units.degreesToRadians(upperMaxAngle),
-              upperMass,
-              true);
+  // private final SingleJointedArmSim lowerArmSim =
+  //     new SingleJointedArmSim(
+  //             gearbox,
+  //             lowerMotorReduction,
+  //             SingleJointedArmSim.estimateMOI(lowerLength, lowerMass),
+  //             lowerLength,
+  //             Units.degreesToRadians(lowerMinAngle),
+  //             Units.degreesToRadians(lowerMaxAngle),
+  //             lowerMass,
+  //             true);
+  // private final SingleJointedArmSim upperArmSim =
+  //     new SingleJointedArmSim(
+  //             gearbox,
+  //             upperMotorReduction,
+  //             SingleJointedArmSim.estimateMOI(upperLength, upperMass),
+  //             upperLength,
+  //             Units.degreesToRadians(upperMinAngle),
+  //             Units.degreesToRadians(upperMaxAngle),
+  //             upperMass,
+  //             true);
 
 
-  private final CANCoderSimCollection lowerEncoderSim = lowerArmEncoder.getSimCollection();
-  private final CANCoderSimCollection upperEncoderSim = upperArmEncoder.getSimCollection();
+  // private final CANCoderSimCollection lowerEncoderSim = lowerArmEncoder.getSimCollection();
+  // private final CANCoderSimCollection upperEncoderSim = upperArmEncoder.getSimCollection();
 
     // Sim stuff end
 
@@ -215,17 +215,21 @@ public class Arm extends DualProfiledPIDSubsystem {
 
   @Override
   public void simulationPeriodic() {
-    upperArmSim.setInput(upperArmMotor.get() * RobotController.getBatteryVoltage());
-    lowerArmSim.setInput(lowerArmMotor.get() * RobotController.getBatteryVoltage());
+    // upperArmSim.setInput(upperArmMotor.get() * RobotController.getBatteryVoltage());
+    // lowerArmSim.setInput(lowerArmMotor.get() * RobotController.getBatteryVoltage());
+    //
+    // upperArmSim.update(0.20);
+    // lowerArmSim.update(0.20);
 
-    upperArmSim.update(0.20);
-    lowerArmSim.update(0.20);
+    // upperArm.setAngle(Units.radiansToDegrees(upperArmSim.getAngleRads()));
+    // lowerArm.setAngle(Units.radiansToDegrees(lowerArmSim.getAngleRads()));
+    
 
-    upperArm.setAngle(Units.radiansToDegrees(upperArmSim.getAngleRads()));
-    lowerArm.setAngle(Units.radiansToDegrees(lowerArmSim.getAngleRads()));
+    upperArm.setAngle(upperGoal);
+    lowerArm.setAngle(lowerGoal);
 
-    RoboRioSim.setVInVoltage(
-        BatterySim.calculateDefaultBatteryLoadedVoltage(upperArmSim.getCurrentDrawAmps() + lowerArmSim.getCurrentDrawAmps()));
+    // RoboRioSim.setVInVoltage(
+    //     BatterySim.calculateDefaultBatteryLoadedVoltage(upperArmSim.getCurrentDrawAmps() + lowerArmSim.getCurrentDrawAmps()));
   }
 
   @Override
