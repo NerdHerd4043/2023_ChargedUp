@@ -86,13 +86,13 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double chargeStationCenterPose = 4.4; //X position of the center of the charge station
+    public static final double chargeStationCenterPose = 4.07; //X position of the center of the charge station
     //At comp: 4.4, at shop: 4.7
     
     public static final int medianFilter = 5;
 
     public static final class PID {
-      public static final double kP = 0.5;
+      public static final double kP = 0.45; //started at 0.5
       public static final double kI = 0;
       public static final double kD = 0.0098;
     }
